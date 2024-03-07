@@ -46,12 +46,16 @@ class LoadingScreen {
     JButton [] numberButtons1= new JButton[10];
     JButton DeleteButton, ClearButton;
     JButton DeleteButton1, ClearButton1;
+    JToggleButton EyeButton;    
 
     
     JProgressBar pbarstart = new JProgressBar(5, 100);
     Timer t;
 
     int i = 0;
+    int ATTEMPTS = 3;
+    final String CorrectPass1 = "123456";
+    final String CorrectPass2 = "654321";
 
     Font myFont = new Font(" Monocraft ",Font.BOLD,15);
 
@@ -583,7 +587,7 @@ class LoadingScreen {
         ExitFrame.setVisible(true);
     }
 
-    public void EmptyField(){
+    public void EmptyField(){//empty field
         Border EmptyFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
         JFrame Empty = new JFrame("Empty Field Notice");
         Empty.setBackground(Color.BLACK);
@@ -607,8 +611,194 @@ class LoadingScreen {
         ProvidePIN.setFont(new Font("Monocraft", Font.BOLD, 15));
         ProvidePIN.setBounds(270, 100, 400, 50);
 
+        JLabel WarningSign1 = new JLabel();
+        ImageIcon WarningSignIcon1 = new ImageIcon("WARNINGSIGN.png");
+        WarningSign1.setIcon(WarningSignIcon1);
+        WarningSign1.setBounds(50, 50, 153, 151); 
+        WarningSign1.setOpaque(false);
+
         JButton OKButton = new JButton();
-        OKButton.setBackground(new Color(103,243,0));
+        OKButton.setBackground(new Color(250,66,27));
+        OKButton.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton.setBounds(300, 170, 80, 40);
+        OKButton.setFocusable(false);
+
+        OKButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Empty.dispose(); 
+            }
+        });
+        Empty.add(EmptyQuestionMark);
+        Empty.add(ProvidePIN);
+        Empty.add(OKButton);
+        Empty.add(WarningSign1);
+        Empty.setVisible(true);
+       
+    }
+
+    public void PassL(){//pass length limit
+        Border PassLFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame PassLg = new JFrame("PIN Lenght Limit Reached Notice");
+        PassLg.setBackground(Color.BLACK);
+        ImageIcon WarningLogo2 = new ImageIcon("WARNINGLOGO.png");
+        PassLg.setIconImage(WarningLogo2.getImage());
+        PassLg.getContentPane().setBackground(Color.BLACK);
+        PassLg.setLayout(null);
+        PassLg.setSize(700, 300);
+        PassLg.setLocationRelativeTo(null);
+        PassLg.getRootPane().setBorder(PassLFrameBorder);
+
+        JLabel PassLQuestionMark = new JLabel();
+        PassLQuestionMark.setText("LIMIT REACHED");
+        PassLQuestionMark.setForeground(new Color(238, 130, 238));
+        PassLQuestionMark.setFont(new Font("Monocraft", Font.BOLD, 40));
+        PassLQuestionMark.setBounds(270, 50, 150, 50); 
+        
+        JLabel LengthN = new JLabel();
+        LengthN.setText("PIN must contain 6 Characters Only");
+        LengthN.setForeground(Color.WHITE);
+        LengthN.setFont(new Font("Monocraft", Font.BOLD, 15));
+        LengthN.setBounds(270, 100, 400, 50);
+
+        JLabel WarningSign2 = new JLabel();
+        ImageIcon WarningSignIcon2 = new ImageIcon("WARNINGSIGN.png");
+        WarningSign2.setIcon(WarningSignIcon2);
+        WarningSign2.setBounds(50, 50, 153, 151); 
+        WarningSign2.setOpaque(false);
+
+        JButton OKButton1 = new JButton();
+        OKButton1.setBackground(new Color(250,66,27));
+        OKButton1.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton1.setBounds(300, 170, 80, 40);
+        OKButton1.setFocusable(false);
+
+        OKButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PassLg.dispose(); 
+            }
+        });
+        PassLg.add(PassLQuestionMark );
+        PassLg.add(LengthN);
+        PassLg.add(OKButton1);
+        PassLg.add(WarningSign2);
+        PassLg.setVisible(true);
+    }
+    
+    public void NumbersO(){//Numbers Only
+        Border NumberOFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame NumO = new JFrame("PIN Lenght Limit Reached Notice");
+        NumO.setBackground(Color.BLACK);
+        ImageIcon WarningLogo3 = new ImageIcon("WARNINGLOGO.png");
+        NumO.setIconImage(WarningLogo3.getImage());
+        NumO.getContentPane().setBackground(Color.BLACK);
+        NumO.setLayout(null);
+        NumO.setSize(700, 300);
+        NumO.setLocationRelativeTo(null);
+        NumO.getRootPane().setBorder(NumberOFrameBorder);
+
+        JLabel NumOQuestionMark = new JLabel();
+        NumOQuestionMark.setText("LIMIT REACHED");
+        NumOQuestionMark.setForeground(new Color(238, 130, 238));
+        NumOQuestionMark.setFont(new Font("Monocraft", Font.BOLD, 40));
+        NumOQuestionMark.setBounds(270, 50, 150, 50); 
+        
+        JLabel NumOL = new JLabel();
+        NumOL.setText("PIN must contain 6 Characters Only");
+        NumOL.setForeground(Color.WHITE);
+        NumOL.setFont(new Font("Monocraft", Font.BOLD, 15));
+        NumOL.setBounds(270, 100, 400, 50);
+
+        JLabel WarningSign3 = new JLabel();
+        ImageIcon WarningSignIcon3 = new ImageIcon("WARNINGSIGN.png");
+        WarningSign3.setIcon(WarningSignIcon3);
+        WarningSign3.setBounds(50, 50, 153, 151); 
+        WarningSign3.setOpaque(false);
+
+        JButton OKButton2 = new JButton();
+        OKButton2.setBackground(new Color(250,66,27));
+        OKButton2.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton2.setBounds(300, 170, 80, 40);
+        OKButton2.setFocusable(false);
+
+        OKButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NumO.dispose(); 
+            }
+        });
+        NumO.add(NumOQuestionMark);
+        NumO.add(NumOL);
+        NumO.add(WarningSign3);
+        NumO.add(OKButton2);
+        NumO.setVisible(true);
+    }
+
+    public void Att(){
+        Border AttemptsFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame ATT = new JFrame("PIN Lenght Limit Reached Notice");
+        ATT.setBackground(Color.BLACK);
+        ImageIcon WarningLogo4 = new ImageIcon("WARNINGLOGO.png");
+        ATT.setIconImage(WarningLogo4.getImage());
+        ATT.getContentPane().setBackground(Color.BLACK);
+        ATT.setLayout(null);
+        ATT.setSize(700, 300);
+        ATT.setLocationRelativeTo(null);
+        ATT.getRootPane().setBorder(AttemptsFrameBorder);
+
+        JLabel ATTQuestionMark = new JLabel();
+        ATTQuestionMark.setText("LIMIT REACHED");
+        ATTQuestionMark.setForeground(new Color(238, 130, 238));
+        ATTQuestionMark.setFont(new Font("Monocraft", Font.BOLD, 40));
+        ATTQuestionMark.setBounds(270, 50, 150, 50);
+
+        JLabel ATTR = new JLabel();
+        ATTR.setText("PIN must contain 6 Characters Only");
+        ATTR.setForeground(Color.WHITE);
+        ATTR.setFont(new Font("Monocraft", Font.BOLD, 15));
+        ATTR.setBounds(270, 100, 400, 50);
+
+        JLabel WarningSign4 = new JLabel();
+        ImageIcon WarningSignIcon4 = new ImageIcon("WARNINGSIGN.png");
+        WarningSign4.setIcon(WarningSignIcon4);
+        WarningSign4.setBounds(50, 50, 153, 151); 
+        WarningSign4.setOpaque(false);
+
+        JButton OKButton3 = new JButton();
+        OKButton3.setBackground(new Color(250,66,27));
+        OKButton3.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton3.setBounds(300, 170, 80, 40);
+        OKButton3.setFocusable(false);
+
+        OKButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ATT.dispose(); 
+            }
+        });
+        ATT.add(ATTQuestionMark);
+        ATT.add(ATTR);
+        ATT.add(WarningSign4);
+        ATT.add(OKButton3);
+        ATT.setVisible(true);
+    }
+    public void Playbutton1(){//Play button conditions
+        JButton PLYButton = new JButton();
+        ImageIcon PLYButtonIcon = new ImageIcon("PlayButton.png");
+        PLYButton.setIcon(PLYButtonIcon);
+        PLYButton.setBounds(300,363,86,43);
+        EyeButton = new JToggleButton(new ImageIcon("EYE.png"));
+        EyeButton.setPreferredSize(new Dimension(30,30));
+        EyeButton.setOpaque(false);
+
+        PLYButton.addActionListener(new ActionListener() {
+            
+        });
 
     }
+
 }
+
+
+
