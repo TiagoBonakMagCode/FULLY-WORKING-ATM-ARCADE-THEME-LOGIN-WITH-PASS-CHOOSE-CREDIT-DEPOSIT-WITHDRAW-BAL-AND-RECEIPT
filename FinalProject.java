@@ -50,6 +50,8 @@ class LoadingScreen {
     JButton DeleteButton1, ClearButton1;
     JToggleButton EyeButton;    
 
+    private static final int MAX_PASSWORD_LENGTH = 6;
+
     
     JProgressBar pbarstart = new JProgressBar(5, 100);
     Timer t;
@@ -59,7 +61,7 @@ class LoadingScreen {
     final String CorrectPass1 = "123456";
     final String CorrectPass2 = "654321";
 
-    Font myFont = new Font(" Monocraft ",Font.BOLD,15);
+    Font myFont = new Font("Monocraft",Font.BOLD,20);
 
     LoadingScreen() {
         ImageIcon logo = new ImageIcon("LOGO.png");
@@ -293,7 +295,7 @@ class LoadingScreen {
         backButton1.setSize(86, 43);
         Image backButton1Icon2 = backButton1Icon.getImage().getScaledInstance(86, 43, Image.SCALE_SMOOTH);
         backButton1.setIcon(new ImageIcon(backButton1Icon2));
-        backButton1.setBounds(140,360, 86, 43);
+        backButton1.setBounds(150,360, 86, 43);
         backButton1.setBorderPainted(false);
         backButton1.setFocusable(false);
         backButton1.setOpaque(false);
@@ -306,6 +308,7 @@ class LoadingScreen {
                 if (a.getSource() == backButton1){
                     frame2.setVisible(true);
                     LogInFrame.setVisible(false);
+                    ACC1PASS.setText("");
                     
                 }
             }
@@ -339,8 +342,11 @@ class LoadingScreen {
         lockedatmLabel.setBounds(-20, -85, 550, 500); 
         lockedatmLabel.setOpaque(false); 
         LogInPanel1.add(lockedatmLabel);
-        ACC1PASS.setBounds(120,290,200,40);
+        ACC1PASS.setBounds(130,290,248,40);
+        ACC1PASS.setFont(myFont);
         ACC1PASS.setHorizontalAlignment(JPasswordField.CENTER);
+         
+    
         ImageIcon loginPaneIcon1 = new ImageIcon("BOARDPANE.png");
         JLabel loginPaneLabel1 = new JLabel(loginPaneIcon1);
         loginPaneLabel1.setLayout(null); 
@@ -380,11 +386,11 @@ class LoadingScreen {
         LogInPanel2.add(loginPane2Label1);
 
     }
-    public void Playbutton1(){//Play button conditions
+    public void Playbutton1(){
         JButton PLYButton = new JButton();
-        ImageIcon PLYButtonIcon = new ImageIcon("PlayButton.png");
+        ImageIcon PLYButtonIcon = new ImageIcon("PLAYBUTTON.png");
         PLYButton.setIcon(PLYButtonIcon);
-        PLYButton.setBounds(240,360, 85, 40);
+        PLYButton.setBounds(260,360, 93, 45);
         PLYButton.setLayout(null);
         PLYButton.setBackground(Color.BLACK);
         PLYButton.setOpaque(false);
@@ -408,16 +414,21 @@ class LoadingScreen {
         PLYButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String password = String.valueOf(ACC1PASS.getPassword());
-                if (password.equals(CorrectPass1)) {
-                   TransAvail();
+                String password = ACC1PASS.getText();
+                if (password.isEmpty()) {
+                    EmptyField(); // Show error message for empty field
+                } else if (password.length() > 6) {
+                    PassL(); // Show error message for exceeding password length
+                } else if (password.equals(CorrectPass1)) {
+                    LogInSuccessful(); // Handle successful login
                 } else {
-                    ATTEMPTS--;
+                    ATTEMPTS--; // Deduct attempts only if the password is incorrect
                     if (ATTEMPTS == 0) {
-                        System.exit(0);
+                        GameOver(); // Handle game over scenario
+                        System.exit(0); // Exit the application
                     } else {
-                        Att();
-                        ACC1PASS.setText(""); 
+                        INCPASS(); // Handle incorrect password attempts
+                        ACC1PASS.setText(""); // Clear the password field for a new attempt                  
                     }
                 }
             }
@@ -425,11 +436,12 @@ class LoadingScreen {
         LogInPanel1.add(PLYButton);
     }
     public void EyeButton(){
-        EyeButton = new JToggleButton(new ImageIcon("EYE.png"));
+        EyeButton = new JToggleButton(new ImageIcon("AASDASDAD.png"));
         EyeButton.setOpaque(false);
-        EyeButton.setBounds(350,290,30,30);
-        UIManager.put("Button.select", new Color(0x9f86c0));
+        EyeButton.setBounds(90,295,30,30);
+        EyeButton.setBackground(new Color(216, 159, 114));
         EyeButton.setPreferredSize(new Dimension(30,30));
+        EyeButton.setBorderPainted(false);
         EyeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -442,7 +454,9 @@ class LoadingScreen {
             }
         });
         LogInPanel1.add(EyeButton);
-}
+    }
+    
+
     public void Keypad(JPasswordField ACC1PASS) {
         Buttonpanel = new JPanel(new GridLayout(4, 3, 10, 10)); 
     
@@ -455,9 +469,14 @@ class LoadingScreen {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() == numberButtons[digit]) {
-                        String TypedPass = new String(ACC1PASS.getPassword());
-                        String newPass = TypedPass + String.valueOf(digit);
-                        ACC1PASS.setText(newPass);
+                        String currentPassword = new String(ACC1PASS.getPassword());
+                        if (currentPassword.length() < MAX_PASSWORD_LENGTH) {
+                            String newPass = currentPassword + String.valueOf(digit);
+                            ACC1PASS.setText(newPass);
+                        } else {
+                            PassL();
+                            ACC1PASS.setText("");
+                        }
                     }
                 }
             });
@@ -471,13 +490,18 @@ class LoadingScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == numberButtons[0]) {
-                    String TypedPass = new String(ACC1PASS.getPassword());
-                    String newPass = TypedPass + "0";
-                    ACC1PASS.setText(newPass);
+                    String currentPassword = new String(ACC1PASS.getPassword());
+                    if (currentPassword.length() < MAX_PASSWORD_LENGTH) {
+                        String newPass = currentPassword + "0";
+                        PassL();
+                        ACC1PASS.setText(newPass);
+                    }
                 }
             }
         });
         Buttonpanel.add(numberButtons[0]);
+    
+        // Add action listener for Delete button
         DeleteButton1 = new JButton("DEL");
         DeleteButton1.setBackground(new Color(204, 204,0));
         DeleteButton1.setFont(new Font("Monocraft", Font.BOLD, 25));
@@ -493,6 +517,8 @@ class LoadingScreen {
             }
         });
         Buttonpanel.add(DeleteButton1);
+    
+        // Add action listener for Clear button
         ClearButton1 = new JButton("CLEAR");
         ClearButton1.setBackground(new Color(255,102,102));
         ClearButton1.setFont(new Font("Monocraft", Font.BOLD, 25));
@@ -505,12 +531,12 @@ class LoadingScreen {
             }
         });
         Buttonpanel.add(ClearButton1);
+    
         Buttonpanel.setBackground(Color.BLACK);
         Buttonpanel.setOpaque(false);
         Buttonpanel.setBounds(750, 210, 500, 450);
         LogInFrame.add(Buttonpanel);
-    }
-
+    }  
 
     public void Keypad2(JPasswordField ACC2PASS) {
         JPanel Buttonpanel1 = new JPanel(new GridLayout(4, 3, 10, 10)); 
@@ -664,7 +690,7 @@ class LoadingScreen {
         EmptyQuestionMark.setText("FIELD EMPTY");
         EmptyQuestionMark.setForeground(new Color(238, 130, 238));
         EmptyQuestionMark.setFont(new Font("Monocraft", Font.BOLD, 40));
-        EmptyQuestionMark.setBounds(270, 50, 150, 50); 
+        EmptyQuestionMark.setBounds(270, 50, 500, 50); 
         
         JLabel ProvidePIN = new JLabel();
         ProvidePIN.setText("Please provide a PIN");
@@ -679,15 +705,18 @@ class LoadingScreen {
         WarningSign1.setOpaque(false);
 
         JButton OKButton = new JButton();
-        OKButton.setBackground(new Color(250,66,27));
+        OKButton.setBackground(new Color(153,255,51));
+        OKButton.setText("OK");
+        OKButton.setForeground(Color.BLACK);
         OKButton.setFont(new Font("Monocraft",Font.BOLD,15));
-        OKButton.setBounds(300, 170, 80, 40);
+        OKButton.setBounds(390, 170, 80, 40);
         OKButton.setFocusable(false);
 
         OKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Empty.dispose(); 
+                Empty.dispose();
+                Att(); 
             }
         });
         Empty.add(EmptyQuestionMark);
@@ -812,10 +841,10 @@ class LoadingScreen {
         ATTQuestionMark.setText("ATTEMPTS");
         ATTQuestionMark.setForeground(new Color(238, 130, 238));
         ATTQuestionMark.setFont(new Font("Monocraft", Font.BOLD, 40));
-        ATTQuestionMark.setBounds(270, 50, 150, 50);
+        ATTQuestionMark.setBounds(270, 50, 500, 50);
 
         JLabel ATTR = new JLabel();
-        ATTR.setText("Attempts Left: " + ATTEMPTS);
+        ATTR.setText("ATTEMPTS LEFT: " + ATTEMPTS);
         ATTR.setForeground(Color.WHITE);
         ATTR.setFont(new Font("Monocraft", Font.BOLD, 15));
         ATTR.setBounds(270, 100, 400, 50);
@@ -827,9 +856,11 @@ class LoadingScreen {
         WarningSign4.setOpaque(false);
 
         JButton OKButton3 = new JButton();
-        OKButton3.setBackground(new Color(250,66,27));
+        OKButton3.setBackground(new Color(153,255,51));
+        OKButton3.setText("OK");
+        OKButton3.setForeground(Color.BLACK);
         OKButton3.setFont(new Font("Monocraft",Font.BOLD,15));
-        OKButton3.setBounds(300, 170, 80, 40);
+        OKButton3.setBounds(390, 170, 80, 40);
         OKButton3.setFocusable(false);
 
         OKButton3.addActionListener(new ActionListener() {
@@ -894,10 +925,22 @@ class LoadingScreen {
         LIS.setVisible(true);
 
     }
+    public void INCPASS(){
+        JFrame GameOverFrame = new JFrame("OUT OF LIVES");
+        GameOverFrame.setSize(1500, 880);
+        GameOverFrame.setVisible(true);
+    }
+
+    public void GameOver(){
+        JFrame GameOverFrame = new JFrame("OUT OF LIVES");
+        GameOverFrame.setSize(1500, 880);
+        GameOverFrame.setVisible(true);
+    }
+
 
 
     public void TransAvail(){
-        JFrame TransactionsFrame = new JFrame();
+        JFrame TransactionsFrame = new JFrame("TRANSACTION MENU");
         JLabel ForFrame = new JLabel();
         ImageIcon logo = new ImageIcon("LOGO.png");
         TransactionsFrame.setIconImage(logo.getImage());
