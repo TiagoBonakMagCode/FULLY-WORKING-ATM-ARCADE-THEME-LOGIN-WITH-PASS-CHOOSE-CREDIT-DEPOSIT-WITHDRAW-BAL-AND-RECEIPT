@@ -249,7 +249,7 @@ class LoadingScreen {
                 }
             }
         });
-
+        
         LogInFrame = new JFrame("ARCADE'S GOLD RESERVE (CREDIT 1)");
         LogInFrame.setIconImage(logo.getImage());
         LogInFrame.setResizable(false);
@@ -267,7 +267,6 @@ class LoadingScreen {
         LogInPanel1.add(backButton1); 
         Playbutton1();
         EyeButton();
-        
 
         LogInFrame2 = new JFrame("ARCADE'S GOLD RESERVE (CREDIT 2)");
         LogInFrame2.setIconImage(logo.getImage());
@@ -892,6 +891,7 @@ class LoadingScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LIS.dispose();
+                LogInFrame.setVisible(false);
                 TransAvail(); 
             }
         });
@@ -974,10 +974,9 @@ class LoadingScreen {
         JButton OKButton5 = new JButton();
         OKButton5.setBackground(Color.BLACK);
         OKButton5.setText("EXIT");
-        OKButton5.setForeground(Color.BLACK);
         OKButton5.setFont(new Font("Monocraft", Font.BOLD, 15));
         OKButton5.setForeground(Color.WHITE);
-        OKButton5.setBounds(690, 690, 150, 40);
+        OKButton5.setBounds(670, 690, 150, 40);
         OKButton5.setFocusable(false);
     
         OKButton5.addActionListener(new ActionListener() {
@@ -993,8 +992,12 @@ class LoadingScreen {
     }
     public void MainMenuBackButton() {
         JButton MainMenuBackB = new JButton("MENU");
+        MainMenuBackB.setBackground(new Color(255,255,0));
+        MainMenuBackB.setBorder(null);
+        MainMenuBackB.setBorderPainted(false);
+        MainMenuBackB.setFocusPainted(false);
         MainMenuBackB.setFont(new Font("Monocraft", Font.BOLD, 15));
-        MainMenuBackB.setBounds(10, 10, 86, 43);
+        MainMenuBackB.setBounds(30, 15, 100, 50);
         MainMenuBackB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent a) {
@@ -1046,4 +1049,7 @@ class LoadingScreen {
         TransactionsFrame.setVisible(true);
     }
 }
+    
+
+
 
