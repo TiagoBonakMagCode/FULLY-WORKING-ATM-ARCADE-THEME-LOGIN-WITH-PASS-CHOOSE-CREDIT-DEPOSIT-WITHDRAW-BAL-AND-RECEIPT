@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class FinalProjectMain {
     public static void main(String[] args) {
@@ -50,7 +48,8 @@ class LoadingScreen {
     JButton [] numberButtons1= new JButton[10];
     JButton DeleteButton, ClearButton;
     JButton DeleteButton1, ClearButton1;
-    JToggleButton EyeButton;    
+    JToggleButton EyeButton;
+    JToggleButton EyeButton1;    
 
     private static final int MAX_PASSWORD_LENGTH = 6;
 
@@ -60,6 +59,7 @@ class LoadingScreen {
 
     int i = 0;
     int ATTEMPTS = 3;
+    int ATTEMPTS1 = 3;
     final String CorrectPass1 = "123456";
     final String CorrectPass2 = "654321";
 
@@ -283,6 +283,8 @@ class LoadingScreen {
         Keypad2(ACC2PASS);
         LogInFrame2.setVisible(false); 
         LogInPanel2.add(backButton2);
+        Playbutton2();
+        EyeButton1();
        
         ImageIcon backButton2Icon = new ImageIcon("BACKBUTTON.png");
         backButton1.setSize(86, 43);
@@ -381,6 +383,7 @@ class LoadingScreen {
         safeatmLabel.setOpaque(false); 
         LogInPanel2.add(safeatmLabel);
         ACC2PASS.setBounds(120,290,255,40);
+        ACC2PASS.setFont(myFont);
         ACC2PASS.setHorizontalAlignment(JPasswordField.CENTER);
         ImageIcon loginPane2Icon1 = new ImageIcon("BOARDPANE.png");
         JLabel loginPane2Label1 = new JLabel(loginPane2Icon1);
@@ -458,7 +461,73 @@ class LoadingScreen {
         LogInPanel1.add(EyeButton);
     }
     
+    public void Playbutton2(){
+        JButton PLYButton2 = new JButton();
+        ImageIcon PLYButtonIcon2 = new ImageIcon("PLAYBUTTON.png");
+        PLYButton2.setIcon(PLYButtonIcon2);
+        PLYButton2.setBounds(260,360, 93, 45);
+        PLYButton2.setLayout(null);
+        PLYButton2.setBackground(Color.BLACK);
+        PLYButton2.setOpaque(false);
+        
+        
+        ACC2PASS.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                e.consume();
+            }
+            @Override
+            public void keyPressed(KeyEvent e){
+                e.consume();
+            }
+            @Override
+            public void keyReleased(KeyEvent e){
+                e.consume();
+            }
+        });
+        PLYButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String password1 = ACC2PASS.getText();
+                if (password1.isEmpty()) {
+                    EmptyField2(); 
+                    ATTEMPTS1--; 
+                } else if (password1.length() > 6) {
+                    PassL2();
+                    ACC2PASS.setText(""); 
+                    ATTEMPTS1--; 
+                } else if (password1.equals(CorrectPass2)) {
+                    LogInSuccessful1(); 
+                } else if (!password1.equals(CorrectPass2)){
+                    INCPASS2();
+                    ACC2PASS.setText(""); 
+                    ATTEMPTS1--; 
+                }
+            }
+        });
+        LogInPanel2.add(PLYButton2);
+    }        
 
+    public void EyeButton1(){
+        EyeButton1 = new JToggleButton(new ImageIcon("AASDASDAD.png"));
+        EyeButton1.setOpaque(false);
+        EyeButton1.setBounds(85,295,30,30);
+        EyeButton1.setBackground(new Color(216, 159, 114));
+        EyeButton1.setPreferredSize(new Dimension(30,30));
+        EyeButton1.setBorderPainted(false);
+        EyeButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (EyeButton1.isSelected()) {
+                    ACC2PASS.setEchoChar((char) 0);
+                    ACC2PASS.setVisible(true); 
+                } else {
+                    ACC2PASS.setEchoChar('•'); 
+                }
+            }
+        });
+        LogInPanel2.add(EyeButton1);
+    }
     public void Keypad(JPasswordField ACC1PASS) {
         Buttonpanel = new JPanel(new GridLayout(4, 3, 10, 10)); 
     
@@ -562,6 +631,10 @@ class LoadingScreen {
                         String TypedPass1 = new String(ACC2PASS.getPassword());
                         String newPass1 = TypedPass1 + String.valueOf(digit);
                         ACC2PASS.setText(newPass1);
+                    } else {
+                        PassL2();
+                        ATTEMPTS1--;
+                        ACC2PASS.setText("");
                     }
                 }
             });
@@ -578,6 +651,14 @@ class LoadingScreen {
                     String TypedPass1 = new String(ACC2PASS.getPassword());
                     String newPass1 = TypedPass1 + "0";
                     ACC2PASS.setText(newPass1);
+                } else{
+                    PassL2();
+                    ATTEMPTS1--;
+                    ACC2PASS.setText("");
+                }
+            
+                if (ATTEMPTS <= 0) {
+                    GameOver2(); 
                 }
             }
         });
@@ -740,6 +821,61 @@ class LoadingScreen {
        
     }
 
+    public void EmptyField2(){//empty field
+        Border EmptyFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame Empty2 = new JFrame("Empty Field Notice");
+        Empty2.setBackground(Color.BLACK);
+        ImageIcon WarningLogo2 = new ImageIcon("WARNINGLOGO.png");
+        Empty2.setIconImage(WarningLogo2.getImage());
+        Empty2.getContentPane().setBackground(Color.BLACK);
+        Empty2.setLayout(null);
+        Empty2.setSize(700, 300);
+        Empty2.setLocationRelativeTo(null);
+        Empty2.getRootPane().setBorder(EmptyFrameBorder2);
+
+        JLabel EmptyQuestionMark2 = new JLabel();
+        EmptyQuestionMark2.setText("FIELD EMPTY!");
+        EmptyQuestionMark2.setForeground(new Color(238, 130, 238));
+        EmptyQuestionMark2.setFont(new Font("Monocraft", Font.BOLD, 40));
+        EmptyQuestionMark2.setBounds(270, 50, 500, 50); 
+        
+        JLabel ProvidePIN2 = new JLabel();
+        ProvidePIN2.setText("Please provide a PIN.");
+        ProvidePIN2.setForeground(Color.WHITE);
+        ProvidePIN2.setFont(new Font("Monocraft", Font.BOLD, 15));
+        ProvidePIN2.setBounds(270, 100, 400, 50);
+
+        JLabel WarningSign2 = new JLabel();
+        ImageIcon WarningSignIcon2 = new ImageIcon("WARNINGSIGN.png");
+        WarningSign2.setIcon(WarningSignIcon2);
+        WarningSign2.setBounds(50, 50, 153, 151); 
+        WarningSign2.setOpaque(false);
+
+        JButton OKButton12 = new JButton();
+        OKButton12.setBackground(new Color(153,255,51));
+        OKButton12.setText("OK");
+        OKButton12.setForeground(Color.BLACK);
+        OKButton12.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton12.setBounds(390, 170, 80, 40);
+        OKButton12.setFocusable(false);
+
+        OKButton12.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Empty2.dispose();
+                Att2(); 
+            if (ATTEMPTS1 == 0){
+                }
+            }
+            
+        });
+        Empty2.add(EmptyQuestionMark2);
+        Empty2.add(ProvidePIN2);
+        Empty2.add(OKButton12);
+        Empty2.add(WarningSign2);
+        Empty2.setVisible(true);
+       
+    }
     public void PassL(){//pass length limit
         Border PassLFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
         JFrame PassLg = new JFrame("PIN Lenght Limit Reached Notice");
@@ -783,7 +919,7 @@ class LoadingScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PassLg.dispose(); 
-                Att();
+                Att2();
             }
         });
         PassLg.add(PassLQuestionMark );
@@ -792,7 +928,59 @@ class LoadingScreen {
         PassLg.add(WarningSign2);
         PassLg.setVisible(true);
     }
+    public void PassL2(){//pass length limit
+        Border PassLFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame PassLg2 = new JFrame("PIN Lenght Limit Reached Notice");
+        PassLg2.setBackground(Color.BLACK);
+        ImageIcon WarningLogo12 = new ImageIcon("WARNINGLOGO.png");
+        PassLg2.setIconImage(WarningLogo12.getImage());
+        PassLg2.getContentPane().setBackground(Color.BLACK);
+        PassLg2.setLayout(null);
+        PassLg2.setSize(700, 300);
+        PassLg2.setLocationRelativeTo(null);
+        PassLg2.getRootPane().setBorder(PassLFrameBorder2);
+        PassLg2.setResizable(false);
 
+        JLabel PassLQuestionMark2 = new JLabel();
+        PassLQuestionMark2.setText("LIMIT REACHED!");
+        PassLQuestionMark2.setForeground(new Color(238, 130, 238));
+        PassLQuestionMark2.setFont(new Font("Monocraft", Font.BOLD, 40));
+        PassLQuestionMark2.setBounds(270, 50, 500, 50);
+        
+        JLabel LengthN2 = new JLabel();
+        LengthN2.setText("PIN must contain 6 Characters Only.");
+        LengthN2.setForeground(Color.WHITE);
+        LengthN2.setFont(new Font("Monocraft", Font.BOLD, 15));
+        LengthN2.setBounds(270, 100, 400, 50);
+
+        JLabel WarningSign12 = new JLabel();
+        ImageIcon WarningSignIcon12 = new ImageIcon("WARNINGSIGN.png");
+        WarningSign12.setIcon(WarningSignIcon12);
+        WarningSign12.setBounds(50, 50, 153, 151); 
+        WarningSign12.setOpaque(false);
+
+        JButton OKButton13 = new JButton();
+        OKButton13.setBackground(new Color(153,255,51));
+        OKButton13.setText("OK");
+        OKButton13.setForeground(Color.BLACK);
+        OKButton13.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton13.setBounds(390, 170, 80, 40);
+        OKButton13.setFocusable(false);
+
+        OKButton13.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PassLg2.dispose(); 
+                Att2();
+            }
+        });
+        PassLg2.add(PassLQuestionMark2 );
+        PassLg2.add(LengthN2);
+        PassLg2.add(OKButton13);
+        PassLg2.add(WarningSign12);
+        PassLg2.setVisible(true);
+    }
+    
     public void Att(){ // Number of Attempts
         Border AttemptsFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
         JFrame ATT = new JFrame("Attempts Notice");
@@ -848,6 +1036,61 @@ class LoadingScreen {
         ATT.add(OKButton3);
         ATT.setVisible(true);
     }
+    public void Att2(){ // Number of Attempts
+        Border AttemptsFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame ATT2 = new JFrame("Attempts Notice");
+        ATT2.setBackground(Color.BLACK);
+        ImageIcon WarningLogo14 = new ImageIcon("WARNINGLOGO.png");
+        ATT2.setIconImage(WarningLogo14.getImage());
+        ATT2.getContentPane().setBackground(Color.BLACK);
+        ATT2.setLayout(null);
+        ATT2.setSize(700, 300);
+        ATT2.setLocationRelativeTo(null);
+        ATT2.getRootPane().setBorder(AttemptsFrameBorder2);
+        ATT2.setResizable(false); 
+
+        JLabel ATTQuestionMark2 = new JLabel();
+        ATTQuestionMark2.setText("ATTEMPTS");
+        ATTQuestionMark2.setForeground(new Color(238, 130, 238));
+        ATTQuestionMark2.setFont(new Font("Monocraft", Font.BOLD, 40));
+        ATTQuestionMark2.setBounds(270, 50, 500, 50);
+
+        JLabel ATTR2 = new JLabel();
+        ATTR2.setText("ATTEMPTS LEFT: " + ATTEMPTS1);
+        ATTR2.setForeground(Color.WHITE);
+        ATTR2.setFont(new Font("Monocraft", Font.BOLD, 15));
+        ATTR2.setBounds(270, 100, 400, 50);
+
+        JLabel WarningSign14 = new JLabel();
+        ImageIcon WarningSignIcon14 = new ImageIcon("WARNINGSIGN.png");
+        WarningSign14.setIcon(WarningSignIcon14);
+        WarningSign14.setBounds(50, 50, 153, 151); 
+        WarningSign14.setOpaque(false);
+
+        JButton OKButton14 = new JButton();
+        OKButton14.setBackground(new Color(153,255,51));
+        OKButton14.setText("OK");
+        OKButton14.setForeground(Color.BLACK);
+        OKButton14.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton14.setBounds(390, 170, 80, 40);
+        OKButton14.setFocusable(false);
+
+        OKButton14.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ATT2.dispose();
+                if (ATTEMPTS1 == 0) {
+                    LogInFrame2.setVisible(false);
+                    GameOver2();
+                }
+            }
+        });          
+        ATT2.add(ATTQuestionMark2);
+        ATT2.add(ATTR2);
+        ATT2.add(WarningSign14);
+        ATT2.add(OKButton14);
+        ATT2.setVisible(true);
+    }
     public void LogInSuccessful(){ // Log In Successful
         Border LISFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
         JFrame LIS = new JFrame("LOGIN SUCCESSFUL");
@@ -902,6 +1145,60 @@ class LoadingScreen {
         LIS.setVisible(true);
 
     }
+    public void LogInSuccessful1(){ // Log In Successful
+        Border LISFrameBorder1 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame LIS1 = new JFrame("LOGIN SUCCESSFUL");
+        LIS1.setBackground(Color.BLACK);
+        ImageIcon CheckLogo1 = new ImageIcon("CHECK-removebg-preview.png");
+        LIS1.setIconImage(CheckLogo1.getImage());
+        LIS1.getContentPane().setBackground(Color.BLACK);
+        LIS1.setLayout(null);
+        LIS1.setSize(700, 300);
+        LIS1.setLocationRelativeTo(null);
+        LIS1.getRootPane().setBorder(LISFrameBorder1);
+        LIS1.setResizable(false);
+
+        JLabel LISCELEB1 = new JLabel();
+        LISCELEB1.setText("PIN Correct!");
+        LISCELEB1.setForeground(new Color(111, 255, 5));
+        LISCELEB1.setFont(new Font("Monocraft", Font.BOLD, 40));
+        LISCELEB1.setBounds(270, 50, 500, 50);
+
+        JLabel LISCONGRATS1 = new JLabel();
+        LISCONGRATS1.setText("Logging In...");
+        LISCONGRATS1.setForeground(Color.WHITE);
+        LISCONGRATS1.setFont(new Font("Monocraft", Font.BOLD, 15));
+        LISCONGRATS1.setBounds(270, 100, 400, 50);
+
+        JLabel LikeSign1 = new JLabel();
+        ImageIcon LikeSignIcon1 = new ImageIcon("LIKE.png");
+        LikeSign1.setIcon(LikeSignIcon1);
+        LikeSign1.setBounds(50, 50, 153, 151); 
+        LikeSign1.setOpaque(false);
+
+        JButton OKButton15 = new JButton();
+        OKButton15.setBackground(new Color(153,255,51));
+        OKButton15.setText("OK");
+        OKButton15.setForeground(Color.BLACK);
+        OKButton15.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton15.setBounds(390, 170, 80, 40);
+        OKButton15.setFocusable(false);
+
+        OKButton15.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LIS1.dispose();
+                LogInFrame2.setVisible(false);
+                TransAvail(); 
+            }
+        });
+        LIS1.add(LISCELEB1);
+        LIS1.add(LISCONGRATS1);
+        LIS1.add(LikeSign1);
+        LIS1.add(OKButton15);
+        LIS1.setVisible(true);
+    }
+    
     public void INCPASS(){
         Border INcFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
         JFrame INCFrame = new JFrame("Incorrect PIN");
@@ -954,7 +1251,58 @@ class LoadingScreen {
         INCFrame.add(OKButton5);
         INCFrame.setVisible(true);
     }
+    public void INCPASS2(){
+        Border INcFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame INCFrame2 = new JFrame("Incorrect PIN");
+        INCFrame2.setBackground(Color.BLACK);
+        ImageIcon CheckLogo2 = new ImageIcon("CHECK-removebg-preview.png");
+        INCFrame2.setIconImage(CheckLogo2.getImage());
+        INCFrame2.getContentPane().setBackground(Color.BLACK);
+        INCFrame2.setLayout(null);
+        INCFrame2.setSize(700, 300);
+        INCFrame2.setLocationRelativeTo(null);
+        INCFrame2.getRootPane().setBorder(INcFrameBorder2);
+        INCFrame2.setResizable(false);
 
+        JLabel INCL2 = new JLabel();
+        INCL2.setText("PIN Correct!");
+        INCL2.setForeground(new Color(111, 255, 5));
+        INCL2.setFont(new Font("Monocraft", Font.BOLD, 40));
+        INCL2.setBounds(270, 50, 500, 50);
+
+        JLabel INCL12 = new JLabel();
+        INCL12.setText("Logging In...");
+        INCL12.setForeground(Color.WHITE);
+        INCL12.setFont(new Font("Monocraft", Font.BOLD, 15));
+        INCL12.setBounds(270, 100, 400, 50);
+
+        JLabel INCL13 = new JLabel();
+        ImageIcon INC13ICON= new ImageIcon("LIKE.png");
+        INCL13.setIcon(INC13ICON);
+        INCL13.setBounds(50, 50, 153, 151); 
+        INCL13.setOpaque(false);
+
+        JButton OKButton16 = new JButton();
+        OKButton16.setBackground(new Color(153,255,51));
+        OKButton16.setText("OK");
+        OKButton16.setForeground(Color.BLACK);
+        OKButton16.setFont(new Font("Monocraft",Font.BOLD,15));
+        OKButton16.setBounds(390, 170, 80, 40);
+        OKButton16.setFocusable(false);
+
+        OKButton16.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                INCFrame2.dispose();
+                Att2();
+            }
+        });
+        INCFrame2.add(INCL2);
+        INCFrame2.add(INCL12);
+        INCFrame2.add(INCL13);
+        INCFrame2.add(OKButton16);
+        INCFrame2.setVisible(true);
+    }
     public void GameOver() {
         Border GOFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
         JFrame GameOverFrame = new JFrame("GAME OVER");
@@ -989,6 +1337,41 @@ class LoadingScreen {
         GameOverFrame.add(OKButton5);
         GameOverFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         GameOverFrame.setVisible(true);
+    }
+    public void GameOver2() {
+        Border GOFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame GameOverFrame2 = new JFrame("GAME OVER");
+        GameOverFrame2.setBackground(Color.BLACK);
+        ImageIcon CheckLogo12 = new ImageIcon("SKULL.png");
+        GameOverFrame2.setIconImage(CheckLogo12.getImage());
+        ImageIcon GameOverFrameBG2 = new ImageIcon("GAMEOVERBG.png");
+        JLabel background2 = new JLabel(GameOverFrameBG2);
+        background2.setBounds(0, 0, 500, 400);
+        GameOverFrame2.setContentPane(background2);
+        GameOverFrame2.setLayout(null);
+        GameOverFrame2.setSize(1500, 900);
+        GameOverFrame2.setLocationRelativeTo(null);
+        GameOverFrame2.getRootPane().setBorder(GOFrameBorder2);
+        GameOverFrame2.setResizable(false);
+    
+        JButton OKButton17 = new JButton();
+        OKButton17.setBackground(Color.BLACK);
+        OKButton17.setText("EXIT");
+        OKButton17.setFont(new Font("Monocraft", Font.BOLD, 15));
+        OKButton17.setForeground(Color.WHITE);
+        OKButton17.setBounds(670, 690, 150, 40);
+        OKButton17.setFocusable(false);
+    
+        OKButton17.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameOverFrame2.dispose();
+                System.exit(0);
+            }
+        });
+        GameOverFrame2.add(OKButton17);
+        GameOverFrame2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        GameOverFrame2.setVisible(true);
     }
     public void MainMenuBackButton() {
         JButton MainMenuBackB = new JButton("MENU");
@@ -1041,7 +1424,7 @@ class LoadingScreen {
         TransactionsFrame.setSize(1500, 880);
         TransactionsFrame.setLocationRelativeTo(null);
 
-        ImageIcon TransactionsFrameBg = new ImageIcon("MAINBG.png");
+        ImageIcon TransactionsFrameBg = new ImageIcon("TRANSACTIONOPTIONS.png");
         Image TransactionsFrameBgIcon = TransactionsFrameBg.getImage().getScaledInstance(TransactionsFrame.getWidth(), TransactionsFrame.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon scaledImageIcon1 = new ImageIcon(TransactionsFrameBgIcon);
         ForFrame .setIcon(scaledImageIcon1);
@@ -1049,7 +1432,7 @@ class LoadingScreen {
         TransactionsFrame.setVisible(true);
     }
 }
-    
+
 
 
 
