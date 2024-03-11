@@ -1549,13 +1549,13 @@ class LoadingScreen {
         TOTALBALANCEFRAME.setVisible(true);
 
         JLabel ShowCURRENT = new JLabel();
-        ShowCURRENT.setText(String.valueOf(SavingBalance1));
+        ShowCURRENT.setText("" + CurrentBalance1);
         ShowCURRENT.setFont(new Font("Monocraft",Font.BOLD,70));
         ShowCURRENT.setBounds(700,230,500,300);
         ShowCURRENT.setForeground(new Color(255,255,0));
 
         JLabel ShowSAVINGS= new JLabel();
-        ShowSAVINGS.setText(String.valueOf(SavingBalance1));
+        ShowSAVINGS.setText("" + SavingBalance1);
         ShowSAVINGS.setFont(new Font("Monocraft",Font.BOLD,70));
         ShowSAVINGS.setBounds(700,540,500,300);
         ShowSAVINGS.setForeground(new Color(255,255,0));
@@ -1854,18 +1854,11 @@ class LoadingScreen {
         DEPOSITENTERBUTTON.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String depositInputText = ENTERDEPOSITAMOUNT.getText();
-                if (!depositInputText.isEmpty()) {
-                    try {
-                        double depositInput = Double.parseDouble(depositInputText);
-                        // Add depositInput to CurrentBalance1
-                        CurrentBalance1 += depositInput;
-                    } catch (NumberFormatException ex) {
-                        // Handle if the input is not a valid number
-                        JOptionPane.showMessageDialog(null, "Invalid deposit amount!");
-                    }
-                } else {
-                    
+                try {
+                    double DepositAmount = Double.parseDouble(ENTERDEPOSITAMOUNT.getText());
+                    CurrentBalance1 += DepositAmount;
+                    DepositSuccessful();
+                } catch (NumberFormatException ex) {
                     EmptyFieldDeposit();
                 }
             }
@@ -2034,9 +2027,14 @@ class LoadingScreen {
         SDEPOSITENTERBUTTON.setForeground(Color.BLACK);
         SDEPOSITENTERBUTTON.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                if (e.getSource() == SDEPOSITENTERBUTTON);
-                ENTERDEPOSITAMOUNT1.setText("2000");
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double DepositAmount1 = Double.parseDouble(ENTERDEPOSITAMOUNT1.getText());
+                    SavingBalance1 += DepositAmount1;
+                    DepositSuccessful();
+                } catch (NumberFormatException ex) {
+                    EmptyFieldDeposit();
+                }
             }
         });
 
@@ -2301,6 +2299,59 @@ class LoadingScreen {
        
     }
 
+    public void DepositSuccessful(){ // Log In Successful
+        Border DSFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame DS= new JFrame("SUCCESSFUL DEPOSIT");
+        DS.setBackground(Color.BLACK);
+        ImageIcon CheckLogo = new ImageIcon("CHECK-removebg-preview.png");
+        DS.setIconImage(CheckLogo.getImage());
+        DS.getContentPane().setBackground(Color.BLACK);
+        DS.setLayout(null);
+        DS.setSize(700, 300);
+        DS.setLocationRelativeTo(null);
+        DS.getRootPane().setBorder(DSFrameBorder);
+        DS.setResizable(false);
+
+        JLabel DSCELEB = new JLabel();
+        DSCELEB.setText("SUCESS");
+        DSCELEB.setForeground(new Color(111, 255, 5));
+        DSCELEB.setFont(new Font("Monocraft", Font.BOLD, 40));
+        DSCELEB.setBounds(270, 50, 500, 50);
+
+        JLabel DSCONGRATS = new JLabel();
+        DSCONGRATS.setText("<html>TOTAL CURRENT: " + CurrentBalance1 + "<br/>TOTAL SAVINGS: " + SavingBalance1 + "</html>");
+        DSCONGRATS.setForeground(Color.WHITE);
+        DSCONGRATS.setFont(new Font("Monocraft", Font.BOLD, 15));
+        DSCONGRATS.setBounds(270, 100, 400, 50);
+
+        JLabel DSLikeSign = new JLabel();
+        ImageIcon DSLikeSignIcon = new ImageIcon("LIKE.png");
+        DSLikeSign.setIcon(DSLikeSignIcon);
+        DSLikeSign.setBounds(50, 50, 153, 151); 
+        DSLikeSign.setOpaque(false);
+
+        JButton DSOKButton = new JButton();
+        DSOKButton.setBackground(new Color(153,255,51));
+        DSOKButton.setText("OK");
+        DSOKButton.setForeground(Color.BLACK);
+        DSOKButton.setFont(new Font("Monocraft",Font.BOLD,15));
+        DSOKButton.setBounds(390, 190, 80, 40);
+        DSOKButton.setFocusable(false);
+
+        DSOKButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DS.dispose();
+            }
+        });
+        DS.add(DSCELEB);
+        DS.add(DSCONGRATS);
+        DS.add(DSLikeSign);
+        DS.add(DSOKButton);
+        DS.setVisible(true);
+
+    }
+
 
 
 
@@ -2368,10 +2419,6 @@ class LoadingScreen {
         TransactionsFrame2.add(WITHDRAWButton2);
         TransactionsFrame2.add(BALANCEButton2);
     }
-    
-
-
-
 }
 
 
