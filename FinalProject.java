@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class FinalProjectMain {
     public static void main(String[] args) {
@@ -57,6 +60,7 @@ class LoadingScreen {
     public static double CurrentBalance1 = 3000.0;
     public static double SavingBalance2 = 3000.0;
     public static double CurrentBalance2 = 3000.0;
+    public ArrayList<String> transactionHistory;
 
     
     JProgressBar pbarstart = new JProgressBar(5, 100);
@@ -1892,6 +1896,8 @@ class LoadingScreen {
                     double DepositAmount = Double.parseDouble(ENTERDEPOSITAMOUNT.getText());
                     CurrentBalance1 += DepositAmount;
                     DepositSuccessful();
+                    ENTERDEPOSITAMOUNT.setText("");
+                    recordTransaction("Deposit", DepositAmount);
                 } catch (NumberFormatException ex) {
                     EmptyFieldDeposit();
                 }
@@ -2066,6 +2072,8 @@ class LoadingScreen {
                     double DepositAmount1 = Double.parseDouble(ENTERDEPOSITAMOUNT1.getText());
                     SavingBalance1 += DepositAmount1;
                     DepositSuccessful();
+                    ENTERDEPOSITAMOUNT1.setText("");
+                    recordTransaction("Deposit", DepositAmount1);
                 } catch (NumberFormatException ex) {
                     EmptyFieldDeposit();
                 }
@@ -2238,7 +2246,9 @@ class LoadingScreen {
                     double withdrawalAmount = Double.parseDouble(ENTERWITHDRAWAMOUNT.getText());
                     if (withdrawalAmount <= CurrentBalance1) {
                         CurrentBalance1 -= withdrawalAmount;
-                        DepositSuccessful();
+                        WithdrawSuccessful();
+                        ENTERWITHDRAWAMOUNT.setText("");
+                        recordTransaction("Withdrawal", withdrawalAmount);
                     } else {
                         INSUFFICIENTBALANCE();
                     }
@@ -2414,7 +2424,9 @@ class LoadingScreen {
                         double withdrawalAmount = Double.parseDouble(SENTERWITHDRAWAMOUNT.getText());
                         if (withdrawalAmount <= SavingBalance1) {
                             SavingBalance1 -= withdrawalAmount;
-                            DepositSuccessful();
+                            WithdrawSuccessful();
+                            SENTERWITHDRAWAMOUNT.setText("");
+                            recordTransaction("Withdrawal", withdrawalAmount);
                         } else {
                             INSUFFICIENTBALANCE();
                         }
@@ -2559,6 +2571,7 @@ class LoadingScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DS.dispose();
+                printReceiptConfirmation();;
             }
         });
         DS.add(DSCELEB);
@@ -2566,6 +2579,59 @@ class LoadingScreen {
         DS.add(DSLikeSign);
         DS.add(DSOKButton);
         DS.setVisible(true);
+
+    }
+    public void WithdrawSuccessful(){ // Log In Successful
+        Border WSFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame WS= new JFrame("SUCCESSFUL WITHDRAWAL");
+        WS.setBackground(Color.BLACK);
+        ImageIcon CheckLogo = new ImageIcon("CHECK-removebg-preview.png");
+        WS.setIconImage(CheckLogo.getImage());
+        WS.getContentPane().setBackground(Color.BLACK);
+        WS.setLayout(null);
+        WS.setSize(700, 300);
+        WS.setLocationRelativeTo(null);
+        WS.getRootPane().setBorder(WSFrameBorder);
+        WS.setResizable(false);
+
+        JLabel WSCELEB = new JLabel();
+        WSCELEB.setText("SUCESS!");
+        WSCELEB.setForeground(new Color(111, 255, 5));
+        WSCELEB.setFont(new Font("Monocraft", Font.BOLD, 50));
+        WSCELEB.setBounds(270, 50, 500, 50);
+
+        JLabel WSCONGRATS = new JLabel();
+        WSCONGRATS.setText("<html><div style='line-height: 0.5;'>TOTAL CURRENT: " + CurrentBalance1 + "<br/>TOTAL SAVINGS: " + SavingBalance1 + "</div></html>");
+        WSCONGRATS.setForeground(Color.WHITE);
+        WSCONGRATS.setFont(new Font("Monocraft", Font.BOLD, 15));
+        WSCONGRATS.setBounds(270, 120, 400, 50);
+
+        JLabel WSLikeSign = new JLabel();
+        ImageIcon DSLikeSignIcon = new ImageIcon("LIKE.png");
+        WSLikeSign.setIcon(DSLikeSignIcon);
+        WSLikeSign.setBounds(50, 50, 153, 151); 
+        WSLikeSign.setOpaque(false);
+
+        JButton WSOKButton = new JButton();
+        WSOKButton.setBackground(new Color(153,255,51));
+        WSOKButton.setText("OK");
+        WSOKButton.setForeground(Color.BLACK);
+        WSOKButton.setFont(new Font("Monocraft",Font.BOLD,15));
+        WSOKButton.setBounds(390, 190, 80, 40);
+        WSOKButton.setFocusable(false);
+
+        WSOKButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WS.dispose();
+                printReceiptConfirmation();;
+            }
+        });
+        WS.add(WSCELEB);
+        WS.add(WSCONGRATS);
+        WS.add(WSLikeSign);
+        WS.add(WSOKButton);
+        WS.setVisible(true);
 
     }
 
@@ -3083,6 +3149,8 @@ class LoadingScreen {
                     double DepositAmount2 = Double.parseDouble(ENTERDEPOSITAMOUNT2.getText());
                     CurrentBalance2 += DepositAmount2;
                     DepositSuccessful2();
+                    ENTERDEPOSITAMOUNT2.setText("");
+                    recordTransaction("Deposit", DepositAmount2);
                 } catch (NumberFormatException ex) {
                     EmptyFieldDeposit2();
                 }
@@ -3256,7 +3324,9 @@ class LoadingScreen {
                 try {
                     double DepositAmount12 = Double.parseDouble(ENTERDEPOSITAMOUNT12.getText());
                     SavingBalance2 += DepositAmount12;
+                    ENTERDEPOSITAMOUNT12.setText("");
                     DepositSuccessful2();
+                    recordTransaction("Deposit", DepositAmount12);
                 } catch (NumberFormatException ex) {
                     EmptyFieldDeposit2();
                 }
@@ -3429,7 +3499,9 @@ class LoadingScreen {
                     double withdrawalAmount = Double.parseDouble(ENTERWITHDRAWAMOUNT2.getText());
                     if (withdrawalAmount <= CurrentBalance2) {
                         CurrentBalance2 -= withdrawalAmount;
-                        DepositSuccessful2();
+                        WithdrawSuccessful1();
+                        ENTERWITHDRAWAMOUNT2.setText("");
+                        recordTransaction("Withdrawal", withdrawalAmount);
                     } else {
                         INSUFFICIENTBALANCE2();
                     }
@@ -3605,7 +3677,9 @@ class LoadingScreen {
                         double withdrawalAmount2 = Double.parseDouble(SENTERWITHDRAWAMOUNT2.getText());
                         if (withdrawalAmount2 <= SavingBalance2) {
                             SavingBalance2 -= withdrawalAmount2;
-                            DepositSuccessful2();
+                            SENTERWITHDRAWAMOUNT2.setText("");
+                            WithdrawSuccessful1();
+                            recordTransaction("Withdrawal", withdrawalAmount2);
                         } else {
                             INSUFFICIENTBALANCE2();
                         }
@@ -3750,6 +3824,7 @@ class LoadingScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DS2.dispose();
+                printReceiptConfirmation();
             }
         });
         DS2.add(DSCELEB2);
@@ -3759,6 +3834,59 @@ class LoadingScreen {
         DS2.setVisible(true);
 
     }
+
+    public void WithdrawSuccessful1(){ // Log In Successful
+        Border WS1FrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame WS1= new JFrame("SUCCESSFUL WITHDRAWAL");
+        WS1.setBackground(Color.BLACK);
+        ImageIcon CheckLogo = new ImageIcon("CHECK-removebg-preview.png");
+        WS1.setIconImage(CheckLogo.getImage());
+        WS1.getContentPane().setBackground(Color.BLACK);
+        WS1.setLayout(null);
+        WS1.setSize(700, 300);
+        WS1.setLocationRelativeTo(null);
+        WS1.getRootPane().setBorder(WS1FrameBorder);
+        WS1.setResizable(false);
+
+        JLabel WSCELEB1 = new JLabel();
+        WSCELEB1.setText("SUCESS!");
+        WSCELEB1.setForeground(new Color(111, 255, 5));
+        WSCELEB1.setFont(new Font("Monocraft", Font.BOLD, 50));
+        WSCELEB1.setBounds(270, 50, 500, 50);
+
+        JLabel WSCONGRATS1 = new JLabel();
+        WSCONGRATS1.setText("<html><div style='line-height: 0.5;'>TOTAL CURRENT: " + CurrentBalance2 + "<br/>TOTAL SAVINGS: " + SavingBalance2 + "</div></html>");
+        WSCONGRATS1.setForeground(Color.WHITE);
+        WSCONGRATS1.setFont(new Font("Monocraft", Font.BOLD, 15));
+        WSCONGRATS1.setBounds(270, 120, 400, 50);
+
+        JLabel WSLikeSign1 = new JLabel();
+        ImageIcon DSLikeSignIcon1 = new ImageIcon("LIKE.png");
+        WSLikeSign1.setIcon(DSLikeSignIcon1);
+        WSLikeSign1.setBounds(50, 50, 153, 151); 
+        WSLikeSign1.setOpaque(false);
+
+        JButton WSOKButton1 = new JButton();
+        WSOKButton1.setBackground(new Color(153,255,51));
+        WSOKButton1.setText("OK");
+        WSOKButton1.setForeground(Color.BLACK);
+        WSOKButton1.setFont(new Font("Monocraft",Font.BOLD,15));
+        WSOKButton1.setBounds(390, 190, 80, 40);
+        WSOKButton1.setFocusable(false);
+
+        WSOKButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WS1.dispose();
+                printReceiptConfirmation();
+            }
+        });
+        WS1.add(WSCELEB1);
+        WS1.add(WSCONGRATS1);
+        WS1.add(WSLikeSign1);
+        WS1.add(WSOKButton1);
+        WS1.setVisible(true);
+    }   
 
     public void INSUFFICIENTBALANCE2(){
         Border INSUFFICIENTBALANCEFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
@@ -3811,8 +3939,101 @@ class LoadingScreen {
         INSUFFICIENTBALANCE2.setVisible(true);
        
     }
-}
 
+    public void printReceiptConfirmation() {
+        Border printReceiptBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        
+        JLabel printReceiptQuestionMark = new JLabel();
+        printReceiptQuestionMark.setText("RECEIPT?");
+        printReceiptQuestionMark.setForeground(new Color(238, 130, 238));
+        printReceiptQuestionMark.setFont(new Font("Monocraft", Font.BOLD, 40));
+        printReceiptQuestionMark.setBounds(270, 50, 250, 50); 
+        
+        JLabel printReceiptConfirmation1 = new JLabel();
+        printReceiptConfirmation1.setText("Do you want to Print your Receipt?");
+        printReceiptConfirmation1.setForeground(Color.WHITE);
+        printReceiptConfirmation1.setFont(new Font("Monocraft", Font.BOLD, 15));
+        printReceiptConfirmation1.setBounds(270, 90, 600, 90); 
+        
+        JButton YesButton = new JButton("YES");
+        YesButton.setBackground(new Color(103,243,0));
+        YesButton.setFont(new Font("Monocraft",Font.BOLD,15));
+        YesButton.setBounds(300, 170, 80, 40);
+        
+        JButton NoButton = new JButton("NO");
+        NoButton.setBackground(new Color(250,66,27));
+        NoButton.setFont(new Font("Monocraft",Font.BOLD,15));
+        NoButton.setBounds(450, 170, 75, 44);
+        
+        JLabel printReceiptWarningSign = new JLabel();
+        ImageIcon printReceiptWarningSignIcon = new ImageIcon("QUESTIONMARKICON.png");
+        printReceiptWarningSign.setIcon(printReceiptWarningSignIcon);
+        printReceiptWarningSign.setBounds(30, 25, 250, 200); 
+        printReceiptWarningSign.setOpaque(false);
+        
+        JFrame printReceiptFrame = new JFrame("Print Receipt Confirmation");
+        ImageIcon WarningLogo = new ImageIcon("RECEIPTICON.png");
+        printReceiptFrame.setIconImage(WarningLogo.getImage());
+        printReceiptFrame.getContentPane().setBackground(Color.BLACK);
+        printReceiptFrame.setLayout(null);
+        printReceiptFrame.setSize(700, 300);
+        printReceiptFrame.setLocationRelativeTo(null);
+        printReceiptFrame.getRootPane().setBorder(printReceiptBorder);
+        printReceiptFrame.setResizable(false);
+        
+        YesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                printReceipt();
+            }
+        });
+        NoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                printReceiptFrame.dispose();
+                
+            }
+        });
+
+        YesButton.setFocusable(false);
+        NoButton.setFocusable(false);
+    
+        printReceiptFrame.add(printReceiptQuestionMark);
+        printReceiptFrame.add(printReceiptConfirmation1);
+        printReceiptFrame.add(YesButton);
+        printReceiptFrame.add(NoButton);
+        printReceiptFrame.add(printReceiptWarningSign);
+        printReceiptFrame.setVisible(true);
+    }
+
+        public void recordTransaction(String type, double amount) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        transactionHistory.add(new Date() + " - " + type + ": $" + df.format(amount));
+    }
+
+    public void printReceipt() {
+    JFrame receiptFrame = new JFrame("ATM Transaction Receipt");
+    receiptFrame.setSize(400, 300);
+    receiptFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+    JTextArea receiptArea = new JTextArea();
+    receiptArea.setEditable(false);
+    StringBuilder sb = new StringBuilder();
+    sb.append("ATM Transaction Receipt\n");
+    sb.append("=======================\n");
+    for (String transaction : transactionHistory) {
+        sb.append(transaction).append("\n");
+    }
+    sb.append("Savings Balance: $" + SavingBalance1);
+    sb.append("Current Balance: " + CurrentBalance1);
+    receiptArea.setText(sb.toString());
+
+    JScrollPane scrollPane = new JScrollPane(receiptArea);
+    receiptFrame.add(scrollPane);
+
+    receiptFrame.setVisible(true);
+    }
+}
 
 
 
