@@ -1727,7 +1727,41 @@ class LoadingScreen {
                 TransAvail();
             }
         });
+        JButton SAVINGSBUTTONWITHDRAW = new JButton("SAVINGS");
+        SAVINGSBUTTONWITHDRAW.setBounds(820,620,400,35);
+        SAVINGSBUTTONWITHDRAW.setBorder(null);
+        SAVINGSBUTTONWITHDRAW.setBorderPainted(false);
+        SAVINGSBUTTONWITHDRAW.setFocusPainted(false);
+        SAVINGSBUTTONWITHDRAW.setFont(new Font("Monocraft", Font.BOLD, 50));
+        SAVINGSBUTTONWITHDRAW.setBackground(Color.BLACK);
+        SAVINGSBUTTONWITHDRAW.setForeground(new Color(255,255,0));
+        SAVINGSBUTTONWITHDRAW.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == SAVINGSBUTTONWITHDRAW);
+                WITHDRAWCHOICE.setVisible(false);
+                FORWIHTDRAWFRAMESAVINGS();
+            }
+        });
 
+        JButton CURRENTBUTTONWITHDRAW = new JButton("CURRENT");
+        CURRENTBUTTONWITHDRAW.setBounds(260,620,400,35);
+        CURRENTBUTTONWITHDRAW.setBorder(null);
+        CURRENTBUTTONWITHDRAW.setBorderPainted(false);
+        CURRENTBUTTONWITHDRAW.setFocusPainted(false);
+        CURRENTBUTTONWITHDRAW.setFont(new Font("Monocraft", Font.BOLD, 50));
+        CURRENTBUTTONWITHDRAW.setBackground(Color.BLACK);
+        CURRENTBUTTONWITHDRAW.setForeground(new Color(255,255,0));
+        CURRENTBUTTONWITHDRAW.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == CURRENTBUTTONWITHDRAW);
+                WITHDRAWCHOICE.setVisible(false);
+                FORWIHTDRAWFRAMECURRENT();
+            }
+        });
+        WITHDRAWCHOICE.add(SAVINGSBUTTONWITHDRAW);
+        WITHDRAWCHOICE.add(CURRENTBUTTONWITHDRAW);
         WITHDRAWCHOICE.add(WITHDRAWCHOICEBACKBUTTON);
         WITHDRAWCHOICE.add(WITHDRAWCHOICECANCELBUTTON);
     }
@@ -2199,11 +2233,21 @@ class LoadingScreen {
         WITHDRAWENTERBUTTON .setForeground(Color.BLACK);
         WITHDRAWENTERBUTTON.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                if (e.getSource() == WITHDRAWENTERBUTTON);
-                ENTERWITHDRAWAMOUNT.setText("2000");
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double withdrawalAmount = Double.parseDouble(ENTERWITHDRAWAMOUNT.getText());
+                    if (withdrawalAmount <= CurrentBalance1) {
+                        CurrentBalance1 -= withdrawalAmount;
+                        DepositSuccessful();
+                    } else {
+                        INSUFFICIENTBALANCE();
+                    }
+                } catch (NumberFormatException ex) {
+                    EmptyFieldDeposit();
+                }
             }
         });
+        
 
         JButton WITHDRAWBACKBUTTON = new JButton("CANCEL");
         WITHDRAWBACKBUTTON.setBounds(490,570,150,70);
@@ -2244,7 +2288,180 @@ class LoadingScreen {
         WITHDRAWFRAME.add(WITHDRAWCLEARBUTTON);
     }
 
+    public void FORWIHTDRAWFRAMESAVINGS(){ 
+        JFrame SWITHDRAWFRAME = new JFrame("WITHDRAW");
+        JLabel SWITHDRAWFRAMELABEL = new JLabel();
+        ImageIcon logo = new ImageIcon("LOGO.png");
+        SWITHDRAWFRAME.setIconImage(logo.getImage());
+        SWITHDRAWFRAME.setResizable(false);
+        SWITHDRAWFRAME.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        SWITHDRAWFRAME.setSize(1500, 880);
+        SWITHDRAWFRAME.setLocationRelativeTo(null);
 
+        ImageIcon SWITHDRAWFRAMEBg = new ImageIcon("WITHDRAWBG.png");
+        Image SWITHDRAWFRAMEBgIcon = SWITHDRAWFRAMEBg.getImage().getScaledInstance(SWITHDRAWFRAME.getWidth(), SWITHDRAWFRAME.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon WITHDRAWFRAMEscaledImageIcon1 = new ImageIcon(SWITHDRAWFRAMEBgIcon);
+        SWITHDRAWFRAMELABEL .setIcon(WITHDRAWFRAMEscaledImageIcon1);
+        SWITHDRAWFRAME.setContentPane(SWITHDRAWFRAMELABEL);
+        SWITHDRAWFRAME.setVisible(true);
+
+        JTextField SENTERWITHDRAWAMOUNT = new JTextField();
+        SENTERWITHDRAWAMOUNT.setBackground(new Color(0,153,153));
+        SENTERWITHDRAWAMOUNT.setForeground(Color.WHITE);
+        SENTERWITHDRAWAMOUNT.setFont(new Font("Monocraft", Font.BOLD,25));
+        SENTERWITHDRAWAMOUNT.setHorizontalAlignment(JTextField.CENTER);
+        SENTERWITHDRAWAMOUNT.setBounds(520, 270 ,500,50);
+        SENTERWITHDRAWAMOUNT.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char N = e.getKeyChar();
+                if(!Character.isDigit(N)){
+                    e.consume();
+                }
+            }
+        });
+        
+        JButton SWithdrawOption1 = new JButton("200");
+        SWithdrawOption1.setBounds(490,370,150,70);
+        SWithdrawOption1.setFocusPainted(false);
+        SWithdrawOption1.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption1.setBackground(new Color(0,153,153));
+        SWithdrawOption1.setForeground(Color.WHITE);
+        SWithdrawOption1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption1);
+                SENTERWITHDRAWAMOUNT.setText("200");
+            }
+        });
+
+        JButton SWithdrawOption2 = new JButton("500");
+        SWithdrawOption2.setBounds(695,370,150,70);
+        SWithdrawOption2.setFocusPainted(false);
+        SWithdrawOption2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption2.setBackground(new Color(0,153,153));
+        SWithdrawOption2.setForeground(Color.WHITE);
+        SWithdrawOption2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption2);
+                SENTERWITHDRAWAMOUNT.setText("500");
+            }
+        });
+
+        JButton SWithdrawOption3 = new JButton("700");
+        SWithdrawOption3.setBounds(900,370,150,70);
+        SWithdrawOption3.setFocusPainted(false);
+        SWithdrawOption3.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption3.setBackground(new Color(0,153,153));
+        SWithdrawOption3.setForeground(Color.WHITE);
+        SWithdrawOption3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption3);
+                SENTERWITHDRAWAMOUNT.setText("700");
+            }
+        });
+
+        JButton SWithdrawOption4 = new JButton("1000");
+        SWithdrawOption4.setBounds(490,470,150,70);
+        SWithdrawOption4.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption4.setBackground(new Color(0,153,153));
+        SWithdrawOption4.setForeground(Color.WHITE);
+        SWithdrawOption4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption4);
+                SENTERWITHDRAWAMOUNT.setText("1000");
+            }
+        });
+
+        JButton SWithdrawOption5 = new JButton("1500");
+        SWithdrawOption5.setBounds(695,470,150,70);
+        SWithdrawOption5.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption5.setBackground(new Color(0,153,153));
+        SWithdrawOption5.setForeground(Color.WHITE);
+        SWithdrawOption5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption5);
+                SENTERWITHDRAWAMOUNT.setText("1500");
+            }
+        });
+
+        JButton SWithdrawOption6 = new JButton("2000");
+        SWithdrawOption6.setBounds(900,470,150,70);
+        SWithdrawOption6.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption6.setBackground(new Color(0,153,153));
+        SWithdrawOption6.setForeground(Color.WHITE);
+        SWithdrawOption6.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption6);
+                SENTERWITHDRAWAMOUNT.setText("2000");
+            }
+        });
+
+        JButton SWITHDRAWENTERBUTTON = new JButton("ENTER");
+        SWITHDRAWENTERBUTTON .setBounds(900,570,150,70);
+        SWITHDRAWENTERBUTTON .setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWITHDRAWENTERBUTTON .setBackground(new Color(0,204,0));
+        SWITHDRAWENTERBUTTON .setForeground(Color.BLACK);
+        SWITHDRAWENTERBUTTON.addActionListener(new ActionListener() {
+            @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        double withdrawalAmount = Double.parseDouble(SENTERWITHDRAWAMOUNT.getText());
+                        if (withdrawalAmount <= SavingBalance1) {
+                            SavingBalance1 -= withdrawalAmount;
+                            DepositSuccessful();
+                        } else {
+                            INSUFFICIENTBALANCE();
+                        }
+                    } catch (NumberFormatException ex) {
+                        EmptyFieldDeposit();
+                    }
+                }
+            });
+
+        JButton SWITHDRAWBACKBUTTON = new JButton("CANCEL");
+        SWITHDRAWBACKBUTTON.setBounds(490,570,150,70);
+        SWITHDRAWBACKBUTTON.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWITHDRAWBACKBUTTON.setBackground(new Color(204,0,0));
+        SWITHDRAWBACKBUTTON.setForeground(Color.BLACK);
+        SWITHDRAWBACKBUTTON.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == SWITHDRAWBACKBUTTON);
+                SWITHDRAWFRAME.setVisible(false);
+                WITHDRAWCHOICE();
+            }
+        });
+
+        JButton SWITHDRAWCLEARBUTTON = new JButton("CLEAR");
+        SWITHDRAWCLEARBUTTON.setBounds(695,570,150,70);
+        SWITHDRAWCLEARBUTTON.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWITHDRAWCLEARBUTTON.setBackground(new Color(204,204,0));
+        SWITHDRAWCLEARBUTTON.setForeground(Color.BLACK);
+        SWITHDRAWCLEARBUTTON.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWITHDRAWCLEARBUTTON);
+                SENTERWITHDRAWAMOUNT.setText("");
+            }
+        });
+
+        SWITHDRAWFRAME.add(SENTERWITHDRAWAMOUNT);
+        SWITHDRAWFRAME.add(SWithdrawOption1);
+        SWITHDRAWFRAME.add(SWithdrawOption2);
+        SWITHDRAWFRAME.add(SWithdrawOption3);
+        SWITHDRAWFRAME.add(SWithdrawOption4);
+        SWITHDRAWFRAME.add(SWithdrawOption5);
+        SWITHDRAWFRAME.add(SWithdrawOption6);
+        SWITHDRAWFRAME.add(SWITHDRAWENTERBUTTON);
+        SWITHDRAWFRAME.add(SWITHDRAWBACKBUTTON);
+        SWITHDRAWFRAME.add(SWITHDRAWCLEARBUTTON);
+    }
 
 
     public void EmptyFieldDeposit(){
@@ -2313,16 +2530,16 @@ class LoadingScreen {
         DS.setResizable(false);
 
         JLabel DSCELEB = new JLabel();
-        DSCELEB.setText("SUCESS");
+        DSCELEB.setText("SUCESS!");
         DSCELEB.setForeground(new Color(111, 255, 5));
-        DSCELEB.setFont(new Font("Monocraft", Font.BOLD, 40));
+        DSCELEB.setFont(new Font("Monocraft", Font.BOLD, 50));
         DSCELEB.setBounds(270, 50, 500, 50);
 
         JLabel DSCONGRATS = new JLabel();
-        DSCONGRATS.setText("<html>TOTAL CURRENT: " + CurrentBalance1 + "<br/>TOTAL SAVINGS: " + SavingBalance1 + "</html>");
+        DSCONGRATS.setText("<html><div style='line-height: 0.5;'>TOTAL CURRENT: " + CurrentBalance1 + "<br/>TOTAL SAVINGS: " + SavingBalance1 + "</div></html>");
         DSCONGRATS.setForeground(Color.WHITE);
         DSCONGRATS.setFont(new Font("Monocraft", Font.BOLD, 15));
-        DSCONGRATS.setBounds(270, 100, 400, 50);
+        DSCONGRATS.setBounds(270, 120, 400, 50);
 
         JLabel DSLikeSign = new JLabel();
         ImageIcon DSLikeSignIcon = new ImageIcon("LIKE.png");
@@ -2352,11 +2569,57 @@ class LoadingScreen {
 
     }
 
+    public void INSUFFICIENTBALANCE(){
+        Border INSUFFICIENTBALANCEFrameBorder = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame  INSUFFICIENTBALANCE = new JFrame("Empty Field Notice");
+        INSUFFICIENTBALANCE.setBackground(Color.BLACK);
+        ImageIcon WarningLogo1 = new ImageIcon("WARNINGLOGO.png");
+        INSUFFICIENTBALANCE.setIconImage(WarningLogo1.getImage());
+        INSUFFICIENTBALANCE.getContentPane().setBackground(Color.BLACK);
+        INSUFFICIENTBALANCE.setLayout(null);
+        INSUFFICIENTBALANCE.setSize(700, 300);
+        INSUFFICIENTBALANCE.setLocationRelativeTo(null);
+        INSUFFICIENTBALANCE.getRootPane().setBorder( INSUFFICIENTBALANCEFrameBorder);
 
+        JLabel  INSUFFICIENTBALANCEQuestionMark = new JLabel();
+        INSUFFICIENTBALANCEQuestionMark.setText("INVALID!");
+        INSUFFICIENTBALANCEQuestionMark.setForeground(new Color(255,0,0));
+        INSUFFICIENTBALANCEQuestionMark.setFont(new Font("Monocraft", Font.BOLD, 40));
+        INSUFFICIENTBALANCEQuestionMark.setBounds(270, 50, 500, 50); 
+        
+        JLabel  INSUFFICIENTBALANCEProvide = new JLabel();
+        INSUFFICIENTBALANCEProvide.setText("Insufficient Balance");
+        INSUFFICIENTBALANCEProvide.setForeground(Color.WHITE);
+        INSUFFICIENTBALANCEProvide.setFont(new Font("Monocraft", Font.BOLD, 15));
+        INSUFFICIENTBALANCEProvide.setBounds(270, 100, 400, 50);
 
+        JLabel  INSUFFICIENTBALANCEWarningSign1 = new JLabel();
+        ImageIcon  INSUFFICIENTBALANCEWarningSignIcon1 = new ImageIcon("WARNINGSIGN.png");
+        INSUFFICIENTBALANCEWarningSign1.setIcon( INSUFFICIENTBALANCEWarningSignIcon1);
+        INSUFFICIENTBALANCEWarningSign1.setBounds(50, 50, 153, 151); 
+        INSUFFICIENTBALANCEWarningSign1.setOpaque(false);
 
+        JButton  INSUFFICIENTBALANCEOKButton = new JButton();
+        INSUFFICIENTBALANCEOKButton.setBackground(new Color(153,255,51));
+        INSUFFICIENTBALANCEOKButton.setText("OK");
+        INSUFFICIENTBALANCEOKButton.setForeground(Color.BLACK);
+        INSUFFICIENTBALANCEOKButton.setFont(new Font("Monocraft",Font.BOLD,15));
+        INSUFFICIENTBALANCEOKButton.setBounds(390, 170, 80, 40);
+        INSUFFICIENTBALANCEOKButton.setFocusable(false);
 
-
+        INSUFFICIENTBALANCEOKButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                INSUFFICIENTBALANCE.dispose();
+                }   
+        });
+        INSUFFICIENTBALANCE.add( INSUFFICIENTBALANCEQuestionMark);
+        INSUFFICIENTBALANCE.add( INSUFFICIENTBALANCEProvide);
+        INSUFFICIENTBALANCE.add( INSUFFICIENTBALANCEOKButton);
+        INSUFFICIENTBALANCE.add( INSUFFICIENTBALANCEWarningSign1);
+        INSUFFICIENTBALANCE.setVisible(true);
+       
+    }
 
     public void TransAvail2(){
         JFrame TransactionsFrame2 = new JFrame("TRANSACTION MENU");
@@ -2388,7 +2651,10 @@ class LoadingScreen {
         DepositButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-               
+               if (e.getSource() == DepositButton2){
+                    TransactionsFrame2.setVisible(false);
+                    DEPOSITCHOICE2();
+               }
             }
         });
 
@@ -2402,6 +2668,15 @@ class LoadingScreen {
         WITHDRAWButton2.setForeground(Color.CYAN);
         WITHDRAWButton2.setBounds(615,700,300,77);
         WITHDRAWButton2.setOpaque(false);
+        WITHDRAWButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               if (e.getSource() == WITHDRAWButton2){
+                    TransactionsFrame2.setVisible(false);
+                    WITHDRAWCHOICE2();
+               }
+            }
+        });
 
         JButton BALANCEButton2 = new JButton();
         BALANCEButton2.setBackground(Color.BLACK);
@@ -2413,13 +2688,1134 @@ class LoadingScreen {
         BALANCEButton2.setForeground(Color.CYAN);
         BALANCEButton2.setBounds(1090,700,300,77);
         BALANCEButton2.setOpaque(false);
+        BALANCEButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == BALANCEButton2){
+                    TransactionsFrame2.setVisible(false);
+                    TOTAlBALANCE2();
+                }
+            }
+        });
 
+        JButton CANCELBUTTON1 = new JButton();
+        CANCELBUTTON1.setBackground(Color.BLACK);
+        CANCELBUTTON1.setBorder(null);
+        CANCELBUTTON1.setBorderPainted(false);
+        CANCELBUTTON1.setFocusPainted(false);
+        CANCELBUTTON1.setText("EXIT");
+        CANCELBUTTON1.setFont(new Font("Monocraft", Font.BOLD, 35));
+        CANCELBUTTON1.setForeground(Color.RED);
+        CANCELBUTTON1.setBounds(75,45,100,35);
+        CANCELBUTTON1.setOpaque(false);
+        CANCELBUTTON1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == CANCELBUTTON1);
+                Exit();
+            }
+        });
 
+        TransactionsFrame2.add(CANCELBUTTON1);
         TransactionsFrame2.add(DepositButton2);
         TransactionsFrame2.add(WITHDRAWButton2);
         TransactionsFrame2.add(BALANCEButton2);
     }
+    
+    public void TOTAlBALANCE2(){
+        JFrame TOTALBALANCEFRAME2 = new JFrame("TOTAL BALANCE");
+        JLabel ForTOTALBALANCE2 = new JLabel();
+        ImageIcon logo = new ImageIcon("LOGO.png");
+        TOTALBALANCEFRAME2.setIconImage(logo.getImage());
+        TOTALBALANCEFRAME2.setResizable(false);
+        TOTALBALANCEFRAME2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        TOTALBALANCEFRAME2.setSize(1500, 880);
+        TOTALBALANCEFRAME2.setLocationRelativeTo(null);
+
+        ImageIcon TOTALBALANCEFrameBg = new ImageIcon("TOTALBALANCEBG.png");
+        Image TOTALBALANCEFrameBgIcon = TOTALBALANCEFrameBg.getImage().getScaledInstance(TOTALBALANCEFRAME2.getWidth(), TOTALBALANCEFRAME2.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon DEPOSITCHOICEscaledImageIcon1 = new ImageIcon(TOTALBALANCEFrameBgIcon);
+        ForTOTALBALANCE2 .setIcon(DEPOSITCHOICEscaledImageIcon1);
+        TOTALBALANCEFRAME2.setContentPane(ForTOTALBALANCE2);
+        TOTALBALANCEFRAME2.setVisible(true);
+
+        JLabel ShowCURRENT2 = new JLabel();
+        ShowCURRENT2.setText("" + CurrentBalance2);
+        ShowCURRENT2.setFont(new Font("Monocraft",Font.BOLD,70));
+        ShowCURRENT2.setBounds(700,230,500,300);
+        ShowCURRENT2.setForeground(new Color(255,255,0));
+
+        JLabel ShowSAVINGS2= new JLabel();
+        ShowSAVINGS2.setText("" + SavingBalance2);
+        ShowSAVINGS2.setFont(new Font("Monocraft",Font.BOLD,70));
+        ShowSAVINGS2.setBounds(700,540,500,300);
+        ShowSAVINGS2.setForeground(new Color(255,255,0));
+
+
+        JButton BALANCEBACKBUTTON2 = new JButton("BACK");
+        BALANCEBACKBUTTON2 .setBounds(45,38,100,35);
+        BALANCEBACKBUTTON2 .setBorder(null);
+        BALANCEBACKBUTTON2 .setBorderPainted(false);
+        BALANCEBACKBUTTON2 .setFocusPainted(false);
+        BALANCEBACKBUTTON2 .setFont(new Font("Monocraft", Font.BOLD, 35));
+        BALANCEBACKBUTTON2 .setBackground(Color.BLACK);
+        BALANCEBACKBUTTON2 .setForeground(Color.PINK);
+        BALANCEBACKBUTTON2 .addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() ==  BALANCEBACKBUTTON2 );
+                TOTALBALANCEFRAME2.setVisible(false);
+                TransAvail2();
+            }
+        });
+        TOTALBALANCEFRAME2.add(ShowCURRENT2);
+        TOTALBALANCEFRAME2.add(ShowSAVINGS2);
+        TOTALBALANCEFRAME2.add(BALANCEBACKBUTTON2);
+
+    }
+
+    public void DEPOSITCHOICE2(){
+        JFrame DEPOSITCHOICE2 = new JFrame("DEPOSIT CHOICE");
+        JLabel ForDEPOSITCHOICE2 = new JLabel();
+        ImageIcon logo = new ImageIcon("LOGO.png");
+        DEPOSITCHOICE2.setIconImage(logo.getImage());
+        DEPOSITCHOICE2.setResizable(false);
+        DEPOSITCHOICE2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        DEPOSITCHOICE2.setSize(1500, 880);
+        DEPOSITCHOICE2.setLocationRelativeTo(null);
+
+        ImageIcon DEPOSITCHOICEFrameBg2 = new ImageIcon("DEPOSITOPTIONBG.png");
+        Image DEPOSITCHOICEFrameBgIcon2 = DEPOSITCHOICEFrameBg2.getImage().getScaledInstance(DEPOSITCHOICE2.getWidth(), DEPOSITCHOICE2.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon DEPOSITCHOICEscaledImageIcon1 = new ImageIcon(DEPOSITCHOICEFrameBgIcon2);
+        ForDEPOSITCHOICE2 .setIcon(DEPOSITCHOICEscaledImageIcon1);
+        DEPOSITCHOICE2.setContentPane(ForDEPOSITCHOICE2);
+        DEPOSITCHOICE2.setVisible(true);
+        
+        JButton DEPOSITCHOICECANCELBUTTON2 = new JButton();
+        DEPOSITCHOICECANCELBUTTON2.setBackground(Color.BLACK);
+        DEPOSITCHOICECANCELBUTTON2.setBorder(null);
+        DEPOSITCHOICECANCELBUTTON2.setBorderPainted(false);
+        DEPOSITCHOICECANCELBUTTON2.setFocusPainted(false);
+        DEPOSITCHOICECANCELBUTTON2.setText("EXIT");
+        DEPOSITCHOICECANCELBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 35));
+        DEPOSITCHOICECANCELBUTTON2.setForeground(Color.RED);
+        DEPOSITCHOICECANCELBUTTON2.setBounds(75,45,100,35);
+        DEPOSITCHOICECANCELBUTTON2.setOpaque(false);
+        DEPOSITCHOICECANCELBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == DEPOSITCHOICECANCELBUTTON2);
+                Exit();
+            }
+        });
+
+        JButton DEPOSITCHOICEBACKBUTTON2 = new JButton("BACK");
+        DEPOSITCHOICEBACKBUTTON2.setBounds(1310,38,100,35);
+        DEPOSITCHOICEBACKBUTTON2.setBorder(null);
+        DEPOSITCHOICEBACKBUTTON2.setBorderPainted(false);
+        DEPOSITCHOICEBACKBUTTON2.setFocusPainted(false);
+        DEPOSITCHOICEBACKBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 35));
+        DEPOSITCHOICEBACKBUTTON2.setBackground(Color.BLACK);
+        DEPOSITCHOICEBACKBUTTON2.setForeground(Color.PINK);
+        DEPOSITCHOICEBACKBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == DEPOSITCHOICEBACKBUTTON2);
+                DEPOSITCHOICE2.setVisible(false);
+                TransAvail2();
+            }
+        });
+
+        JButton SAVINGSBUTTONDEPOSIT2 = new JButton("SAVINGS");
+        SAVINGSBUTTONDEPOSIT2.setBounds(820,620,400,35);
+        SAVINGSBUTTONDEPOSIT2.setBorder(null);
+        SAVINGSBUTTONDEPOSIT2.setBorderPainted(false);
+        SAVINGSBUTTONDEPOSIT2.setFocusPainted(false);
+        SAVINGSBUTTONDEPOSIT2.setFont(new Font("Monocraft", Font.BOLD, 50));
+        SAVINGSBUTTONDEPOSIT2.setBackground(Color.BLACK);
+        SAVINGSBUTTONDEPOSIT2.setForeground(new Color(255,255,0));
+        SAVINGSBUTTONDEPOSIT2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == SAVINGSBUTTONDEPOSIT2);
+                DEPOSITCHOICE2.setVisible(false);
+                FORDEPOSITFRAMESAVINGS();
+            }
+        });
+
+        JButton CURRENTBUTTONDEPOSIT2 = new JButton("CURRENT");
+        CURRENTBUTTONDEPOSIT2.setBounds(260,620,400,35);
+        CURRENTBUTTONDEPOSIT2.setBorder(null);
+        CURRENTBUTTONDEPOSIT2.setBorderPainted(false);
+        CURRENTBUTTONDEPOSIT2.setFocusPainted(false);
+        CURRENTBUTTONDEPOSIT2.setFont(new Font("Monocraft", Font.BOLD, 50));
+        CURRENTBUTTONDEPOSIT2.setBackground(Color.BLACK);
+        CURRENTBUTTONDEPOSIT2.setForeground(new Color(255,255,0));
+        CURRENTBUTTONDEPOSIT2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == CURRENTBUTTONDEPOSIT2);
+                DEPOSITCHOICE2.setVisible(false);
+                FORDEPOSITFRAMECURRENT2();
+            }
+        });
+
+        DEPOSITCHOICE2.add(DEPOSITCHOICEBACKBUTTON2);
+        DEPOSITCHOICE2.add(DEPOSITCHOICECANCELBUTTON2);
+        DEPOSITCHOICE2.add(SAVINGSBUTTONDEPOSIT2);
+        DEPOSITCHOICE2.add(CURRENTBUTTONDEPOSIT2);
+
+
 }
+    public void WITHDRAWCHOICE2(){
+        JFrame WITHDRAWCHOICE2 = new JFrame("WITHDRAW CHOICE");
+        JLabel ForWITHDRAWCHOICE2 = new JLabel();
+        ImageIcon logo = new ImageIcon("LOGO.png");
+        WITHDRAWCHOICE2.setIconImage(logo.getImage());
+        WITHDRAWCHOICE2.setResizable(false);
+        WITHDRAWCHOICE2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        WITHDRAWCHOICE2.setSize(1500, 880);
+        WITHDRAWCHOICE2.setLocationRelativeTo(null);
+
+        ImageIcon WITHDRAWCHOICEFrameBg2 = new ImageIcon("WITHDRAWOPTIONBG.png");
+        Image WITHDRAWCHOICEFrameBgIcon2 = WITHDRAWCHOICEFrameBg2.getImage().getScaledInstance(WITHDRAWCHOICE2.getWidth(), WITHDRAWCHOICE2.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon WITHDRAWCHOICEscaledImageIcon1 = new ImageIcon(WITHDRAWCHOICEFrameBgIcon2);
+        ForWITHDRAWCHOICE2 .setIcon(WITHDRAWCHOICEscaledImageIcon1);
+        WITHDRAWCHOICE2.setContentPane(ForWITHDRAWCHOICE2);
+        WITHDRAWCHOICE2.setVisible(true);
+
+        JButton WITHDRAWCHOICECANCELBUTTON2 = new JButton();
+        WITHDRAWCHOICECANCELBUTTON2.setBackground(Color.BLACK);
+        WITHDRAWCHOICECANCELBUTTON2.setBorder(null);
+        WITHDRAWCHOICECANCELBUTTON2.setBorderPainted(false);
+        WITHDRAWCHOICECANCELBUTTON2.setFocusPainted(false);
+        WITHDRAWCHOICECANCELBUTTON2.setText("EXIT");
+        WITHDRAWCHOICECANCELBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 35));
+        WITHDRAWCHOICECANCELBUTTON2.setForeground(Color.RED);
+        WITHDRAWCHOICECANCELBUTTON2.setBounds(75,45,100,35);
+        WITHDRAWCHOICECANCELBUTTON2.setOpaque(false);
+        WITHDRAWCHOICECANCELBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == WITHDRAWCHOICECANCELBUTTON2);
+                Exit();
+            }
+        });
+
+        JButton WITHDRAWCHOICEBACKBUTTON2 = new JButton("BACK");
+        WITHDRAWCHOICEBACKBUTTON2.setBounds(1310,38,100,35);
+        WITHDRAWCHOICEBACKBUTTON2.setBorder(null);
+        WITHDRAWCHOICEBACKBUTTON2.setBorderPainted(false);
+        WITHDRAWCHOICEBACKBUTTON2.setFocusPainted(false);
+        WITHDRAWCHOICEBACKBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 35));
+        WITHDRAWCHOICEBACKBUTTON2.setBackground(Color.BLACK);
+        WITHDRAWCHOICEBACKBUTTON2.setForeground(Color.PINK);
+        WITHDRAWCHOICEBACKBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == WITHDRAWCHOICEBACKBUTTON2);
+                WITHDRAWCHOICE2.setVisible(false);
+                TransAvail2();
+            }
+        });
+        JButton SAVINGSBUTTONWITHDRAW2 = new JButton("SAVINGS");
+        SAVINGSBUTTONWITHDRAW2.setBounds(820,620,400,35);
+        SAVINGSBUTTONWITHDRAW2.setBorder(null);
+        SAVINGSBUTTONWITHDRAW2.setBorderPainted(false);
+        SAVINGSBUTTONWITHDRAW2.setFocusPainted(false);
+        SAVINGSBUTTONWITHDRAW2.setFont(new Font("Monocraft", Font.BOLD, 50));
+        SAVINGSBUTTONWITHDRAW2.setBackground(Color.BLACK);
+        SAVINGSBUTTONWITHDRAW2.setForeground(new Color(255,255,0));
+        SAVINGSBUTTONWITHDRAW2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == SAVINGSBUTTONWITHDRAW2);
+                WITHDRAWCHOICE2.setVisible(false);
+                FORWIHTDRAWFRAMESAVINGS2();
+            }
+        });
+
+        JButton CURRENTBUTTONWITHDRAW2 = new JButton("CURRENT");
+        CURRENTBUTTONWITHDRAW2.setBounds(260,620,400,35);
+        CURRENTBUTTONWITHDRAW2.setBorder(null);
+        CURRENTBUTTONWITHDRAW2.setBorderPainted(false);
+        CURRENTBUTTONWITHDRAW2.setFocusPainted(false);
+        CURRENTBUTTONWITHDRAW2.setFont(new Font("Monocraft", Font.BOLD, 50));
+        CURRENTBUTTONWITHDRAW2.setBackground(Color.BLACK);
+        CURRENTBUTTONWITHDRAW2.setForeground(new Color(255,255,0));
+        CURRENTBUTTONWITHDRAW2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == CURRENTBUTTONWITHDRAW2);
+                WITHDRAWCHOICE2.setVisible(false);
+                FORWIHTDRAWFRAMECURRENT();
+            }
+        });
+        WITHDRAWCHOICE2.add(SAVINGSBUTTONWITHDRAW2);
+        WITHDRAWCHOICE2.add(CURRENTBUTTONWITHDRAW2);
+        WITHDRAWCHOICE2.add(WITHDRAWCHOICEBACKBUTTON2);
+        WITHDRAWCHOICE2.add(WITHDRAWCHOICECANCELBUTTON2);
+    }
+
+    public void FORDEPOSITFRAMECURRENT2(){
+        JFrame DEPOSITFRAME2 = new JFrame("DEPOSIT");
+        JLabel DEPOSITFRAMELABEL2 = new JLabel();
+        ImageIcon logo = new ImageIcon("LOGO.png");
+        DEPOSITFRAME2.setIconImage(logo.getImage());
+        DEPOSITFRAME2.setResizable(false);
+        DEPOSITFRAME2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        DEPOSITFRAME2.setSize(1500, 880);
+        DEPOSITFRAME2.setLocationRelativeTo(null);
+
+        ImageIcon DEPOSITFRAMEBg = new ImageIcon("DEPOSITBG.png");
+        Image DEPOSITFRAMEBgIcon = DEPOSITFRAMEBg.getImage().getScaledInstance(DEPOSITFRAME2.getWidth(), DEPOSITFRAME2.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon DEPOSITFRAMEscaledImageIcon1 = new ImageIcon(DEPOSITFRAMEBgIcon);
+        DEPOSITFRAMELABEL2 .setIcon(DEPOSITFRAMEscaledImageIcon1);
+        DEPOSITFRAME2.setContentPane(DEPOSITFRAMELABEL2);
+        DEPOSITFRAME2.setVisible(true);
+
+        JTextField ENTERDEPOSITAMOUNT2 = new JTextField();
+        ENTERDEPOSITAMOUNT2.setBackground(new Color(0,153,153));
+        ENTERDEPOSITAMOUNT2.setForeground(Color.WHITE);
+        ENTERDEPOSITAMOUNT2.setFont(new Font("Monocraft", Font.BOLD,25));
+        ENTERDEPOSITAMOUNT2.setHorizontalAlignment(JTextField.CENTER);
+        ENTERDEPOSITAMOUNT2.setBounds(520, 270 ,500,50);
+        ENTERDEPOSITAMOUNT2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char N = e.getKeyChar();
+                if(!Character.isDigit(N)){
+                    e.consume();
+                }
+            }
+        });
+        
+        JButton DepositOption12 = new JButton("200");
+        DepositOption12.setBounds(490,370,150,70);
+        DepositOption12.setFocusPainted(false);
+        DepositOption12.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DepositOption12.setBackground(new Color(0,153,153));
+        DepositOption12.setForeground(Color.WHITE);
+        DepositOption12.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == DepositOption12);
+                ENTERDEPOSITAMOUNT2.setText("200");
+            }
+        });
+
+        JButton DepositOption22 = new JButton("500");
+        DepositOption22.setBounds(695,370,150,70);
+        DepositOption22.setFocusPainted(false);
+        DepositOption22.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DepositOption22.setBackground(new Color(0,153,153));
+        DepositOption22.setForeground(Color.WHITE);
+        DepositOption22.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == DepositOption22);
+                ENTERDEPOSITAMOUNT2.setText("500");
+            }
+        });
+
+        JButton DepositOption32 = new JButton("700");
+        DepositOption32.setBounds(900,370,150,70);
+        DepositOption32.setFocusPainted(false);
+        DepositOption32.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DepositOption32.setBackground(new Color(0,153,153));
+        DepositOption32.setForeground(Color.WHITE);
+        DepositOption32.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == DepositOption32);
+                ENTERDEPOSITAMOUNT2.setText("700");
+            }
+        });
+
+        JButton DepositOption42 = new JButton("1000");
+        DepositOption42.setBounds(490,470,150,70);
+        DepositOption42.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DepositOption42.setBackground(new Color(0,153,153));
+        DepositOption42.setForeground(Color.WHITE);
+        DepositOption42.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == DepositOption42);
+                ENTERDEPOSITAMOUNT2.setText("1000");
+            }
+        });
+
+        JButton DepositOption52 = new JButton("1500");
+        DepositOption52.setBounds(695,470,150,70);
+        DepositOption52.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DepositOption52.setBackground(new Color(0,153,153));
+        DepositOption52.setForeground(Color.WHITE);
+        DepositOption52.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == DepositOption52);
+                ENTERDEPOSITAMOUNT2.setText("1500");
+            }
+        });
+
+        JButton DepositOption62 = new JButton("2000");
+        DepositOption62.setBounds(900,470,150,70);
+        DepositOption62.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DepositOption62.setBackground(new Color(0,153,153));
+        DepositOption62.setForeground(Color.WHITE);
+        DepositOption62.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == DepositOption62);
+                ENTERDEPOSITAMOUNT2.setText("2000");
+            }
+        });
+
+        JButton DEPOSITENTERBUTTON2 = new JButton("ENTER");
+        DEPOSITENTERBUTTON2.setBounds(900,570,150,70);
+        DEPOSITENTERBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DEPOSITENTERBUTTON2.setBackground(new Color(0,204,0));
+        DEPOSITENTERBUTTON2.setForeground(Color.BLACK);
+        DEPOSITENTERBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double DepositAmount2 = Double.parseDouble(ENTERDEPOSITAMOUNT2.getText());
+                    CurrentBalance2 += DepositAmount2;
+                    DepositSuccessful2();
+                } catch (NumberFormatException ex) {
+                    EmptyFieldDeposit2();
+                }
+            }
+        });
+
+        JButton DEPOSITBACKBUTTON2 = new JButton("CANCEL");
+        DEPOSITBACKBUTTON2.setBounds(490,570,150,70);
+        DEPOSITBACKBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DEPOSITBACKBUTTON2.setBackground(new Color(204,0,0));
+        DEPOSITBACKBUTTON2.setForeground(Color.BLACK);
+        DEPOSITBACKBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == DEPOSITBACKBUTTON2);
+                DEPOSITFRAME2.setVisible(false);
+                DEPOSITCHOICE();
+            }
+        });
+
+        JButton DEPOSITCLEARBUTTON2 = new JButton("CLEAR");
+        DEPOSITCLEARBUTTON2.setBounds(695,570,150,70);
+        DEPOSITCLEARBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        DEPOSITCLEARBUTTON2.setBackground(new Color(204,204,0));
+        DEPOSITCLEARBUTTON2.setForeground(Color.BLACK);
+        DEPOSITCLEARBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == DEPOSITCLEARBUTTON2);
+                ENTERDEPOSITAMOUNT2.setText("");
+            }
+        });
+
+        DEPOSITFRAME2.add(ENTERDEPOSITAMOUNT2);
+        DEPOSITFRAME2.add(DepositOption12);
+        DEPOSITFRAME2.add(DepositOption22);
+        DEPOSITFRAME2.add(DepositOption32);
+        DEPOSITFRAME2.add(DepositOption42);
+        DEPOSITFRAME2.add(DepositOption52);
+        DEPOSITFRAME2.add(DepositOption62);
+        DEPOSITFRAME2.add(DEPOSITENTERBUTTON2);
+        DEPOSITFRAME2.add(DEPOSITBACKBUTTON2);
+        DEPOSITFRAME2.add(DEPOSITCLEARBUTTON2);
+
+
+
+    }
+
+    public void FORDEPOSITFRAMESAVINGS2(){
+        JFrame DEPOSITFRAME12 = new JFrame("DEPOSIT");
+        JLabel DEPOSITFRAMELABEL12 = new JLabel();
+        ImageIcon logo = new ImageIcon("LOGO.png");
+        DEPOSITFRAME12.setIconImage(logo.getImage());
+        DEPOSITFRAME12.setResizable(false);
+        DEPOSITFRAME12.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        DEPOSITFRAME12.setSize(1500, 880);
+        DEPOSITFRAME12.setLocationRelativeTo(null);
+
+        ImageIcon DEPOSITFRAMEBg12 = new ImageIcon("DEPOSITBG.png");
+        Image DEPOSITFRAMEBgIcon12 = DEPOSITFRAMEBg12.getImage().getScaledInstance(DEPOSITFRAME12.getWidth(), DEPOSITFRAME12.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon DEPOSITFRAMEscaledImageIcon112 = new ImageIcon(DEPOSITFRAMEBgIcon12);
+        DEPOSITFRAMELABEL12 .setIcon(DEPOSITFRAMEscaledImageIcon112);
+        DEPOSITFRAME12.setContentPane(DEPOSITFRAMELABEL12);
+        DEPOSITFRAME12.setVisible(true);
+
+        JTextField ENTERDEPOSITAMOUNT12 = new JTextField();
+        ENTERDEPOSITAMOUNT12.setBackground(new Color(0,153,153));
+        ENTERDEPOSITAMOUNT12.setForeground(Color.WHITE);
+        ENTERDEPOSITAMOUNT12.setFont(new Font("Monocraft", Font.BOLD,25));
+        ENTERDEPOSITAMOUNT12.setHorizontalAlignment(JTextField.CENTER);
+        ENTERDEPOSITAMOUNT12.setBounds(520, 270 ,500,50);
+        ENTERDEPOSITAMOUNT12.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char N = e.getKeyChar();
+                if(!Character.isDigit(N)){
+                    e.consume();
+                }
+            }
+        });
+        
+        JButton SDepositOption12 = new JButton("200");
+        SDepositOption12.setBounds(490,370,150,70);
+        SDepositOption12.setFocusPainted(false);
+        SDepositOption12.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDepositOption12.setBackground(new Color(0,153,153));
+        SDepositOption12.setForeground(Color.WHITE);
+        SDepositOption12.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SDepositOption12);
+                ENTERDEPOSITAMOUNT12.setText("200");
+            }
+        });
+
+        JButton SDepositOption22 = new JButton("500");
+        SDepositOption22.setBounds(695,370,150,70);
+        SDepositOption22.setFocusPainted(false);
+        SDepositOption22.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDepositOption22.setBackground(new Color(0,153,153));
+        SDepositOption22.setForeground(Color.WHITE);
+        SDepositOption22.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SDepositOption22);
+                ENTERDEPOSITAMOUNT12.setText("500");
+            }
+        });
+
+        JButton SDepositOption32= new JButton("700");
+        SDepositOption32.setBounds(900,370,150,70);
+        SDepositOption32.setFocusPainted(false);
+        SDepositOption32.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDepositOption32.setBackground(new Color(0,153,153));
+        SDepositOption32.setForeground(Color.WHITE);
+        SDepositOption32.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SDepositOption32);
+                ENTERDEPOSITAMOUNT12.setText("700");
+            }
+        });
+
+        JButton SDepositOption42 = new JButton("1000");
+        SDepositOption42.setBounds(490,470,150,70);
+        SDepositOption42.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDepositOption42.setBackground(new Color(0,153,153));
+        SDepositOption42.setForeground(Color.WHITE);
+        SDepositOption42.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SDepositOption42);
+                ENTERDEPOSITAMOUNT12.setText("1000");
+            }
+        });
+
+        JButton SDepositOption52 = new JButton("1500");
+        SDepositOption52.setBounds(695,470,150,70);
+        SDepositOption52.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDepositOption52.setBackground(new Color(0,153,153));
+        SDepositOption52.setForeground(Color.WHITE);
+        SDepositOption52.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SDepositOption52);
+                ENTERDEPOSITAMOUNT12.setText("1500");
+            }
+        });
+
+        JButton SDepositOption62 = new JButton("2000");
+        SDepositOption62.setBounds(900,470,150,70);
+        SDepositOption62.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDepositOption62.setBackground(new Color(0,153,153));
+        SDepositOption62.setForeground(Color.WHITE);
+        SDepositOption62.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SDepositOption62);
+                ENTERDEPOSITAMOUNT12.setText("2000");
+            }
+        });
+
+        JButton SDEPOSITENTERBUTTON2 = new JButton("ENTER");
+        SDEPOSITENTERBUTTON2.setBounds(900,570,150,70);
+        SDEPOSITENTERBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDEPOSITENTERBUTTON2.setBackground(new Color(0,204,0));
+        SDEPOSITENTERBUTTON2.setForeground(Color.BLACK);
+        SDEPOSITENTERBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double DepositAmount12 = Double.parseDouble(ENTERDEPOSITAMOUNT12.getText());
+                    SavingBalance2 += DepositAmount12;
+                    DepositSuccessful2();
+                } catch (NumberFormatException ex) {
+                    EmptyFieldDeposit2();
+                }
+            }
+        });
+
+        JButton SDEPOSITBACKBUTTON2 = new JButton("CANCEL");
+        SDEPOSITBACKBUTTON2.setBounds(490,570,150,70);
+        SDEPOSITBACKBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDEPOSITBACKBUTTON2.setBackground(new Color(204,0,0));
+        SDEPOSITBACKBUTTON2.setForeground(Color.BLACK);
+        SDEPOSITBACKBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == SDEPOSITBACKBUTTON2);
+                DEPOSITFRAME12.setVisible(false);
+                DEPOSITCHOICE2();
+            }
+        });
+
+        JButton SDEPOSITCLEARBUTTON2 = new JButton("CLEAR");
+        SDEPOSITCLEARBUTTON2.setBounds(695,570,150,70);
+        SDEPOSITCLEARBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SDEPOSITCLEARBUTTON2.setBackground(new Color(204,204,0));
+        SDEPOSITCLEARBUTTON2.setForeground(Color.BLACK);
+        SDEPOSITCLEARBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SDEPOSITCLEARBUTTON2);
+                ENTERDEPOSITAMOUNT12.setText("");
+            }
+        });
+
+        DEPOSITFRAME12.add(ENTERDEPOSITAMOUNT12);
+        DEPOSITFRAME12.add(SDepositOption12);
+        DEPOSITFRAME12.add(SDepositOption22);
+        DEPOSITFRAME12.add(SDepositOption32);
+        DEPOSITFRAME12.add(SDepositOption42);
+        DEPOSITFRAME12.add(SDepositOption52);
+        DEPOSITFRAME12.add(SDepositOption62);
+        DEPOSITFRAME12.add(SDEPOSITENTERBUTTON2);
+        DEPOSITFRAME12.add(SDEPOSITBACKBUTTON2);
+        DEPOSITFRAME12.add(SDEPOSITCLEARBUTTON2);
+    }
+
+
+    public void FORWIHTDRAWFRAMECURRENT2(){ 
+        JFrame WITHDRAWFRAME2 = new JFrame("WITHDRAW");
+        JLabel WITHDRAWFRAMELABEL2 = new JLabel();
+        ImageIcon logo = new ImageIcon("LOGO.png");
+        WITHDRAWFRAME2.setIconImage(logo.getImage());
+        WITHDRAWFRAME2.setResizable(false);
+        WITHDRAWFRAME2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        WITHDRAWFRAME2.setSize(1500, 880);
+        WITHDRAWFRAME2.setLocationRelativeTo(null);
+
+        ImageIcon WITHDRAWFRAMEBg2 = new ImageIcon("WITHDRAWBG.png");
+        Image WITHDRAWFRAMEBgIcon2 = WITHDRAWFRAMEBg2.getImage().getScaledInstance(WITHDRAWFRAME2.getWidth(), WITHDRAWFRAME2.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon WITHDRAWFRAMEscaledImageIcon1 = new ImageIcon(WITHDRAWFRAMEBgIcon2);
+        WITHDRAWFRAMELABEL2 .setIcon(WITHDRAWFRAMEscaledImageIcon1);
+        WITHDRAWFRAME2.setContentPane(WITHDRAWFRAMELABEL2);
+        WITHDRAWFRAME2.setVisible(true);
+
+        JTextField ENTERWITHDRAWAMOUNT2 = new JTextField();
+        ENTERWITHDRAWAMOUNT2.setBackground(new Color(0,153,153));
+        ENTERWITHDRAWAMOUNT2.setForeground(Color.WHITE);
+        ENTERWITHDRAWAMOUNT2.setFont(new Font("Monocraft", Font.BOLD,25));
+        ENTERWITHDRAWAMOUNT2.setHorizontalAlignment(JTextField.CENTER);
+        ENTERWITHDRAWAMOUNT2.setBounds(520, 270 ,500,50);
+        ENTERWITHDRAWAMOUNT2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char N = e.getKeyChar();
+                if(!Character.isDigit(N)){
+                    e.consume();
+                }
+            }
+        });
+        
+        JButton WithdrawOption12 = new JButton("200");
+        WithdrawOption12.setBounds(490,370,150,70);
+        WithdrawOption12.setFocusPainted(false);
+        WithdrawOption12.setFont(new Font("Monocraft", Font.BOLD, 25));
+        WithdrawOption12.setBackground(new Color(0,153,153));
+        WithdrawOption12.setForeground(Color.WHITE);
+        WithdrawOption12.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == WithdrawOption12);
+                ENTERWITHDRAWAMOUNT2.setText("200");
+            }
+        });
+
+        JButton WithdrawOption22 = new JButton("500");
+        WithdrawOption22.setBounds(695,370,150,70);
+        WithdrawOption22.setFocusPainted(false);
+        WithdrawOption22.setFont(new Font("Monocraft", Font.BOLD, 25));
+        WithdrawOption22.setBackground(new Color(0,153,153));
+        WithdrawOption22.setForeground(Color.WHITE);
+        WithdrawOption22.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == WithdrawOption22);
+                ENTERWITHDRAWAMOUNT2.setText("500");
+            }
+        });
+
+        JButton WithdrawOption32 = new JButton("700");
+        WithdrawOption32.setBounds(900,370,150,70);
+        WithdrawOption32.setFocusPainted(false);
+        WithdrawOption32.setFont(new Font("Monocraft", Font.BOLD, 25));
+        WithdrawOption32.setBackground(new Color(0,153,153));
+        WithdrawOption32.setForeground(Color.WHITE);
+        WithdrawOption32.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == WithdrawOption32);
+                ENTERWITHDRAWAMOUNT2.setText("700");
+            }
+        });
+
+        JButton WithdrawOption42 = new JButton("1000");
+        WithdrawOption42.setBounds(490,470,150,70);
+        WithdrawOption42.setFont(new Font("Monocraft", Font.BOLD, 25));
+        WithdrawOption42.setBackground(new Color(0,153,153));
+        WithdrawOption42.setForeground(Color.WHITE);
+        WithdrawOption42.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == WithdrawOption42);
+                ENTERWITHDRAWAMOUNT2.setText("1000");
+            }
+        });
+
+        JButton WithdrawOption52 = new JButton("1500");
+        WithdrawOption52.setBounds(695,470,150,70);
+        WithdrawOption52.setFont(new Font("Monocraft", Font.BOLD, 25));
+        WithdrawOption52.setBackground(new Color(0,153,153));
+        WithdrawOption52.setForeground(Color.WHITE);
+        WithdrawOption52.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == WithdrawOption52);
+                ENTERWITHDRAWAMOUNT2.setText("1500");
+            }
+        });
+
+        JButton WithdrawOption62 = new JButton("2000");
+        WithdrawOption62.setBounds(900,470,150,70);
+        WithdrawOption62.setFont(new Font("Monocraft", Font.BOLD, 25));
+        WithdrawOption62.setBackground(new Color(0,153,153));
+        WithdrawOption62.setForeground(Color.WHITE);
+        WithdrawOption62.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == WithdrawOption62);
+                ENTERWITHDRAWAMOUNT2.setText("2000");
+            }
+        });
+
+        JButton WITHDRAWENTERBUTTON2 = new JButton("ENTER");
+        WITHDRAWENTERBUTTON2 .setBounds(900,570,150,70);
+        WITHDRAWENTERBUTTON2 .setFont(new Font("Monocraft", Font.BOLD, 25));
+        WITHDRAWENTERBUTTON2 .setBackground(new Color(0,204,0));
+        WITHDRAWENTERBUTTON2 .setForeground(Color.BLACK);
+        WITHDRAWENTERBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double withdrawalAmount = Double.parseDouble(ENTERWITHDRAWAMOUNT2.getText());
+                    if (withdrawalAmount <= CurrentBalance2) {
+                        CurrentBalance2 -= withdrawalAmount;
+                        DepositSuccessful2();
+                    } else {
+                        INSUFFICIENTBALANCE2();
+                    }
+                } catch (NumberFormatException ex) {
+                    EmptyFieldDeposit2();
+                }
+            }
+        });
+        
+
+        JButton WITHDRAWBACKBUTTON2 = new JButton("CANCEL");
+        WITHDRAWBACKBUTTON2.setBounds(490,570,150,70);
+        WITHDRAWBACKBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        WITHDRAWBACKBUTTON2.setBackground(new Color(204,0,0));
+        WITHDRAWBACKBUTTON2.setForeground(Color.BLACK);
+        WITHDRAWBACKBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == WITHDRAWBACKBUTTON2);
+                WITHDRAWFRAME2.setVisible(false);
+                WITHDRAWCHOICE();
+            }
+        });
+
+        JButton WITHDRAWCLEARBUTTON2 = new JButton("CLEAR");
+        WITHDRAWCLEARBUTTON2.setBounds(695,570,150,70);
+        WITHDRAWCLEARBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        WITHDRAWCLEARBUTTON2.setBackground(new Color(204,204,0));
+        WITHDRAWCLEARBUTTON2.setForeground(Color.BLACK);
+        WITHDRAWCLEARBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == WITHDRAWCLEARBUTTON2);
+                ENTERWITHDRAWAMOUNT2.setText("");
+            }
+        });
+
+        WITHDRAWFRAME2.add(ENTERWITHDRAWAMOUNT2);
+        WITHDRAWFRAME2.add(WithdrawOption12);
+        WITHDRAWFRAME2.add(WithdrawOption22);
+        WITHDRAWFRAME2.add(WithdrawOption32);
+        WITHDRAWFRAME2.add(WithdrawOption42);
+        WITHDRAWFRAME2.add(WithdrawOption52);
+        WITHDRAWFRAME2.add(WithdrawOption62);
+        WITHDRAWFRAME2.add(WITHDRAWENTERBUTTON2);
+        WITHDRAWFRAME2.add(WITHDRAWBACKBUTTON2);
+        WITHDRAWFRAME2.add(WITHDRAWCLEARBUTTON2);
+    }
+
+    public void FORWIHTDRAWFRAMESAVINGS2(){ 
+        JFrame SWITHDRAWFRAME2 = new JFrame("WITHDRAW");
+        JLabel SWITHDRAWFRAMELABEL2 = new JLabel();
+        ImageIcon logo = new ImageIcon("LOGO.png");
+        SWITHDRAWFRAME2.setIconImage(logo.getImage());
+        SWITHDRAWFRAME2.setResizable(false);
+        SWITHDRAWFRAME2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        SWITHDRAWFRAME2.setSize(1500, 880);
+        SWITHDRAWFRAME2.setLocationRelativeTo(null);
+
+        ImageIcon SWITHDRAWFRAMEBg2 = new ImageIcon("WITHDRAWBG.png");
+        Image SWITHDRAWFRAMEBgIcon2 = SWITHDRAWFRAMEBg2.getImage().getScaledInstance(SWITHDRAWFRAME2.getWidth(), SWITHDRAWFRAME2.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon WITHDRAWFRAMEscaledImageIcon12 = new ImageIcon(SWITHDRAWFRAMEBgIcon2);
+        SWITHDRAWFRAMELABEL2 .setIcon(WITHDRAWFRAMEscaledImageIcon12);
+        SWITHDRAWFRAME2.setContentPane(SWITHDRAWFRAMELABEL2);
+        SWITHDRAWFRAME2.setVisible(true);
+
+        JTextField SENTERWITHDRAWAMOUNT2 = new JTextField();
+        SENTERWITHDRAWAMOUNT2.setBackground(new Color(0,153,153));
+        SENTERWITHDRAWAMOUNT2.setForeground(Color.WHITE);
+        SENTERWITHDRAWAMOUNT2.setFont(new Font("Monocraft", Font.BOLD,25));
+        SENTERWITHDRAWAMOUNT2.setHorizontalAlignment(JTextField.CENTER);
+        SENTERWITHDRAWAMOUNT2.setBounds(520, 270 ,500,50);
+        SENTERWITHDRAWAMOUNT2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char N = e.getKeyChar();
+                if(!Character.isDigit(N)){
+                    e.consume();
+                }
+            }
+        });
+        
+        JButton SWithdrawOption12 = new JButton("200");
+        SWithdrawOption12.setBounds(490,370,150,70);
+        SWithdrawOption12.setFocusPainted(false);
+        SWithdrawOption12.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption12.setBackground(new Color(0,153,153));
+        SWithdrawOption12.setForeground(Color.WHITE);
+        SWithdrawOption12.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption12);
+                SENTERWITHDRAWAMOUNT2.setText("200");
+            }
+        });
+
+        JButton SWithdrawOption22 = new JButton("500");
+        SWithdrawOption22.setBounds(695,370,150,70);
+        SWithdrawOption22.setFocusPainted(false);
+        SWithdrawOption22.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption22.setBackground(new Color(0,153,153));
+        SWithdrawOption22.setForeground(Color.WHITE);
+        SWithdrawOption22.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption22);
+                SENTERWITHDRAWAMOUNT2.setText("500");
+            }
+        });
+
+        JButton SWithdrawOption32 = new JButton("700");
+        SWithdrawOption32.setBounds(900,370,150,70);
+        SWithdrawOption32.setFocusPainted(false);
+        SWithdrawOption32.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption32.setBackground(new Color(0,153,153));
+        SWithdrawOption32.setForeground(Color.WHITE);
+        SWithdrawOption32.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption32);
+                SENTERWITHDRAWAMOUNT2.setText("700");
+            }
+        });
+
+        JButton SWithdrawOption42 = new JButton("1000");
+        SWithdrawOption42.setBounds(490,470,150,70);
+        SWithdrawOption42.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption42.setBackground(new Color(0,153,153));
+        SWithdrawOption42.setForeground(Color.WHITE);
+        SWithdrawOption42.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption42);
+                SENTERWITHDRAWAMOUNT2.setText("1000");
+            }
+        });
+
+        JButton SWithdrawOption52 = new JButton("1500");
+        SWithdrawOption52.setBounds(695,470,150,70);
+        SWithdrawOption52.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption52.setBackground(new Color(0,153,153));
+        SWithdrawOption52.setForeground(Color.WHITE);
+        SWithdrawOption52.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption52);
+                SENTERWITHDRAWAMOUNT2.setText("1500");
+            }
+        });
+
+        JButton SWithdrawOption62= new JButton("2000");
+        SWithdrawOption62.setBounds(900,470,150,70);
+        SWithdrawOption62.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWithdrawOption62.setBackground(new Color(0,153,153));
+        SWithdrawOption62.setForeground(Color.WHITE);
+        SWithdrawOption62.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWithdrawOption62);
+                SENTERWITHDRAWAMOUNT2.setText("2000");
+            }
+        });
+
+        JButton SWITHDRAWENTERBUTTON2 = new JButton("ENTER");
+        SWITHDRAWENTERBUTTON2.setBounds(900,570,150,70);
+        SWITHDRAWENTERBUTTON2 .setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWITHDRAWENTERBUTTON2 .setBackground(new Color(0,204,0));
+        SWITHDRAWENTERBUTTON2 .setForeground(Color.BLACK);
+        SWITHDRAWENTERBUTTON2.addActionListener(new ActionListener() {
+            @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        double withdrawalAmount2 = Double.parseDouble(SENTERWITHDRAWAMOUNT2.getText());
+                        if (withdrawalAmount2 <= SavingBalance2) {
+                            SavingBalance2 -= withdrawalAmount2;
+                            DepositSuccessful2();
+                        } else {
+                            INSUFFICIENTBALANCE2();
+                        }
+                    } catch (NumberFormatException ex) {
+                        EmptyFieldDeposit2();
+                    }
+                }
+            });
+
+        JButton SWITHDRAWBACKBUTTON2 = new JButton("CANCEL");
+        SWITHDRAWBACKBUTTON2.setBounds(490,570,150,70);
+        SWITHDRAWBACKBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWITHDRAWBACKBUTTON2.setBackground(new Color(204,0,0));
+        SWITHDRAWBACKBUTTON2.setForeground(Color.BLACK);
+        SWITHDRAWBACKBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e ){
+                if (e.getSource() == SWITHDRAWBACKBUTTON2);
+                SWITHDRAWFRAME2.setVisible(false);
+                WITHDRAWCHOICE2();
+            }
+        });
+
+        JButton SWITHDRAWCLEARBUTTON2 = new JButton("CLEAR");
+        SWITHDRAWCLEARBUTTON2.setBounds(695,570,150,70);
+        SWITHDRAWCLEARBUTTON2.setFont(new Font("Monocraft", Font.BOLD, 25));
+        SWITHDRAWCLEARBUTTON2.setBackground(new Color(204,204,0));
+        SWITHDRAWCLEARBUTTON2.setForeground(Color.BLACK);
+        SWITHDRAWCLEARBUTTON2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == SWITHDRAWCLEARBUTTON2);
+                SENTERWITHDRAWAMOUNT2.setText("");
+            }
+        });
+
+        SWITHDRAWFRAME2.add(SENTERWITHDRAWAMOUNT2);
+        SWITHDRAWFRAME2.add(SWithdrawOption12);
+        SWITHDRAWFRAME2.add(SWithdrawOption22);
+        SWITHDRAWFRAME2.add(SWithdrawOption32);
+        SWITHDRAWFRAME2.add(SWithdrawOption42);
+        SWITHDRAWFRAME2.add(SWithdrawOption52);
+        SWITHDRAWFRAME2.add(SWithdrawOption62);
+        SWITHDRAWFRAME2.add(SWITHDRAWENTERBUTTON2);
+        SWITHDRAWFRAME2.add(SWITHDRAWBACKBUTTON2);
+        SWITHDRAWFRAME2.add(SWITHDRAWCLEARBUTTON2);
+    }
+
+
+    public void EmptyFieldDeposit2(){
+        Border EmptyFieldDepositFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame EmptyFieldDeposit2 = new JFrame("Empty Field Notice");
+        EmptyFieldDeposit2.setBackground(Color.BLACK);
+        ImageIcon WarningLogo12 = new ImageIcon("WARNINGLOGO.png");
+        EmptyFieldDeposit2.setIconImage(WarningLogo12.getImage());
+        EmptyFieldDeposit2.getContentPane().setBackground(Color.BLACK);
+        EmptyFieldDeposit2.setLayout(null);
+        EmptyFieldDeposit2.setSize(700, 300);
+        EmptyFieldDeposit2.setLocationRelativeTo(null);
+        EmptyFieldDeposit2.getRootPane().setBorder(EmptyFieldDepositFrameBorder2);
+
+        JLabel EmptyFieldDepositQuestionMark2 = new JLabel();
+        EmptyFieldDepositQuestionMark2.setText("FIELD EMPTY!");
+        EmptyFieldDepositQuestionMark2.setForeground(new Color(255,0,0));
+        EmptyFieldDepositQuestionMark2.setFont(new Font("Monocraft", Font.BOLD, 40));
+        EmptyFieldDepositQuestionMark2.setBounds(270, 50, 500, 50); 
+        
+        JLabel EmptyFieldDepositProvide2 = new JLabel();
+        EmptyFieldDepositProvide2.setText("Please Enter Amount.");
+        EmptyFieldDepositProvide2.setForeground(Color.WHITE);
+        EmptyFieldDepositProvide2.setFont(new Font("Monocraft", Font.BOLD, 15));
+        EmptyFieldDepositProvide2.setBounds(270, 100, 400, 50);
+
+        JLabel EmptyFieldDepositWarningSign12 = new JLabel();
+        ImageIcon EmptyFieldDepositWarningSignIcon12 = new ImageIcon("WARNINGSIGN.png");
+        EmptyFieldDepositWarningSign12.setIcon(EmptyFieldDepositWarningSignIcon12);
+        EmptyFieldDepositWarningSign12.setBounds(50, 50, 153, 151); 
+        EmptyFieldDepositWarningSign12.setOpaque(false);
+
+        JButton EmptyFieldDepositOKButton2 = new JButton();
+        EmptyFieldDepositOKButton2.setBackground(new Color(153,255,51));
+        EmptyFieldDepositOKButton2.setText("OK");
+        EmptyFieldDepositOKButton2.setForeground(Color.BLACK);
+        EmptyFieldDepositOKButton2.setFont(new Font("Monocraft",Font.BOLD,15));
+        EmptyFieldDepositOKButton2.setBounds(390, 170, 80, 40);
+        EmptyFieldDepositOKButton2.setFocusable(false);
+
+        EmptyFieldDepositOKButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EmptyFieldDeposit2.dispose();
+                }   
+        });
+        EmptyFieldDeposit2.add(EmptyFieldDepositQuestionMark2);
+        EmptyFieldDeposit2.add(EmptyFieldDepositProvide2);
+        EmptyFieldDeposit2.add(EmptyFieldDepositOKButton2);
+        EmptyFieldDeposit2.add(EmptyFieldDepositWarningSign12);
+        EmptyFieldDeposit2.setVisible(true);
+       
+    }
+
+    public void DepositSuccessful2(){ // Log In Successful
+        Border DSFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame DS2= new JFrame("SUCCESSFUL DEPOSIT");
+        DS2.setBackground(Color.BLACK);
+        ImageIcon CheckLogo = new ImageIcon("CHECK-removebg-preview.png");
+        DS2.setIconImage(CheckLogo.getImage());
+        DS2.getContentPane().setBackground(Color.BLACK);
+        DS2.setLayout(null);
+        DS2.setSize(700, 300);
+        DS2.setLocationRelativeTo(null);
+        DS2.getRootPane().setBorder(DSFrameBorder2);
+        DS2.setResizable(false);
+
+        JLabel DSCELEB2 = new JLabel();
+        DSCELEB2.setText("SUCESS!");
+        DSCELEB2.setForeground(new Color(111, 255, 5));
+        DSCELEB2.setFont(new Font("Monocraft", Font.BOLD, 50));
+        DSCELEB2.setBounds(270, 50, 500, 50);
+
+        JLabel DSCONGRATS2 = new JLabel();
+        DSCONGRATS2.setText("<html><div style='line-height: 0.5;'>TOTAL CURRENT: " + CurrentBalance2 + "<br/>TOTAL SAVINGS: " + SavingBalance2 + "</div></html>");
+        DSCONGRATS2.setForeground(Color.WHITE);
+        DSCONGRATS2.setFont(new Font("Monocraft", Font.BOLD, 15));
+        DSCONGRATS2.setBounds(270, 120, 400, 50);
+
+        JLabel DSLikeSign2 = new JLabel();
+        ImageIcon DSLikeSignIcon2 = new ImageIcon("LIKE.png");
+        DSLikeSign2.setIcon(DSLikeSignIcon2);
+        DSLikeSign2.setBounds(50, 50, 153, 151); 
+        DSLikeSign2.setOpaque(false);
+
+        JButton DSOKButton2 = new JButton();
+        DSOKButton2.setBackground(new Color(153,255,51));
+        DSOKButton2.setText("OK");
+        DSOKButton2.setForeground(Color.BLACK);
+        DSOKButton2.setFont(new Font("Monocraft",Font.BOLD,15));
+        DSOKButton2.setBounds(390, 190, 80, 40);
+        DSOKButton2.setFocusable(false);
+
+        DSOKButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DS2.dispose();
+            }
+        });
+        DS2.add(DSCELEB2);
+        DS2.add(DSCONGRATS2);
+        DS2.add(DSLikeSign2);
+        DS2.add(DSOKButton2);
+        DS2.setVisible(true);
+
+    }
+
+    public void INSUFFICIENTBALANCE2(){
+        Border INSUFFICIENTBALANCEFrameBorder2 = BorderFactory.createLineBorder(new Color(0, 0, 225));
+        JFrame  INSUFFICIENTBALANCE2 = new JFrame("Empty Field Notice");
+        INSUFFICIENTBALANCE2.setBackground(Color.BLACK);
+        ImageIcon WarningLogo12 = new ImageIcon("WARNINGLOGO.png");
+        INSUFFICIENTBALANCE2.setIconImage(WarningLogo12.getImage());
+        INSUFFICIENTBALANCE2.getContentPane().setBackground(Color.BLACK);
+        INSUFFICIENTBALANCE2.setLayout(null);
+        INSUFFICIENTBALANCE2.setSize(700, 300);
+        INSUFFICIENTBALANCE2.setLocationRelativeTo(null);
+        INSUFFICIENTBALANCE2.getRootPane().setBorder( INSUFFICIENTBALANCEFrameBorder2);
+
+        JLabel  INSUFFICIENTBALANCEQuestionMark2= new JLabel();
+        INSUFFICIENTBALANCEQuestionMark2.setText("INVALID!");
+        INSUFFICIENTBALANCEQuestionMark2.setForeground(new Color(255,0,0));
+        INSUFFICIENTBALANCEQuestionMark2.setFont(new Font("Monocraft", Font.BOLD, 40));
+        INSUFFICIENTBALANCEQuestionMark2.setBounds(270, 50, 500, 50); 
+        
+        JLabel  INSUFFICIENTBALANCEProvide2 = new JLabel();
+        INSUFFICIENTBALANCEProvide2.setText("Insufficient Balance");
+        INSUFFICIENTBALANCEProvide2.setForeground(Color.WHITE);
+        INSUFFICIENTBALANCEProvide2.setFont(new Font("Monocraft", Font.BOLD, 15));
+        INSUFFICIENTBALANCEProvide2.setBounds(270, 100, 400, 50);
+
+        JLabel  INSUFFICIENTBALANCEWarningSign12 = new JLabel();
+        ImageIcon  INSUFFICIENTBALANCEWarningSignIcon12 = new ImageIcon("WARNINGSIGN.png");
+        INSUFFICIENTBALANCEWarningSign12.setIcon( INSUFFICIENTBALANCEWarningSignIcon12);
+        INSUFFICIENTBALANCEWarningSign12.setBounds(50, 50, 153, 151); 
+        INSUFFICIENTBALANCEWarningSign12.setOpaque(false);
+
+        JButton  INSUFFICIENTBALANCEOKButton2 = new JButton();
+        INSUFFICIENTBALANCEOKButton2.setBackground(new Color(153,255,51));
+        INSUFFICIENTBALANCEOKButton2.setText("OK");
+        INSUFFICIENTBALANCEOKButton2.setForeground(Color.BLACK);
+        INSUFFICIENTBALANCEOKButton2.setFont(new Font("Monocraft",Font.BOLD,15));
+        INSUFFICIENTBALANCEOKButton2.setBounds(390, 170, 80, 40);
+        INSUFFICIENTBALANCEOKButton2.setFocusable(false);
+
+        INSUFFICIENTBALANCEOKButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                INSUFFICIENTBALANCE2.dispose();
+                }   
+        });
+        INSUFFICIENTBALANCE2.add( INSUFFICIENTBALANCEQuestionMark2);
+        INSUFFICIENTBALANCE2.add( INSUFFICIENTBALANCEProvide2);
+        INSUFFICIENTBALANCE2.add( INSUFFICIENTBALANCEOKButton2);
+        INSUFFICIENTBALANCE2.add( INSUFFICIENTBALANCEWarningSign12);
+        INSUFFICIENTBALANCE2.setVisible(true);
+       
+    }
+}
+
+
+
+
 
 
 
